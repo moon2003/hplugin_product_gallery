@@ -24,14 +24,15 @@
                     
 
     <!-- Reserve List -->       
-    <form name="frm_in" id="frm_in" action="/wp-admin/admin.php" method="post"> 
+    <form name="frm_in" id="frm_in_id" action="/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-sortupdate" method="post"> 
     <table class="table table-striped">
          <thead>
             <th ><strong>선택</strong></th>
             <th ><strong>옵션명</strong></th>
             <th ><strong>옵션타입</strong></th>             
             <th ><strong>옵션값</strong></th>
-            <th ><strong>순서</strong></th>
+            <th ><strong>순서&nbsp;<span id="hplugin_product_gallery_sort_status" style="display:none" class="label label-danger">순서변경됨<span></strong></th>
+            <th ><strong>사용여부</strong></th>
             <th ><strong>기능</strong></th>
          </thead>       
          <tbody>
@@ -152,14 +153,27 @@
         } 
 
 
+        $v_status_str = "";
+        $v_class_status = "";
+
+        if( $data_arr->status == "N"  ){
+
+            $v_status_str = "<span class=\"label label-warning\">미사용</span>";
+            $v_class_status = "style=\"background-color:#FAAC58\"";
+        }
+
         print "
-        <tr class=\"active\">
-            <td>".($tot- ( ($cpage-1) * $max_rows) - $Cnt)."</td>
-            <td><a href=\"/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-view&cid=".$data_arr->no."\">".$data_arr->name."</a></td>            
-            <td>".$a_opt_type_str."</td>
-            <td>".$a_value_str."</td>
-            <td>".$data_arr->sort." </td>
-            <td>
+
+        <tr class=\"active\" id=\"optionval_".$Cnt."\" >
+            <td $v_class_status><input type=\"checkbox\" name=\"selno[]\" value=\"".$data_arr->no."\"><input type=\"hidden\" name=\"optno[]\" value=\"".$data_arr->no."\"></td>
+            <td $v_class_status><a href=\"/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-view&cid=".$data_arr->no."\">".$data_arr->name."</a></td>            
+            <td $v_class_status>".$a_opt_type_str."</td>
+            <td $v_class_status>".$a_value_str."</td>
+            <td $v_class_status><i class=\"glyphicon glyphicon-arrow-up\" style=\"cursor:pointer;color:red\" onclick=\"javascript:hplugin_product_gallery_opt_sort('U',".$Cnt.");\"></i> 
+                <i class=\"glyphicon glyphicon-arrow-down\" style=\"cursor:pointer;color:blue\" onclick=\"javascript:hplugin_product_gallery_opt_sort('D',".$Cnt.");\" /></i>
+                </td>
+            <td $v_class_status>".$v_status_str."</td>    
+            <td $v_class_status>
                 <button type=\"button\" class=\"btn btn-xs btn-danger\" onclick=\"javascript:hplugin_product_gallery_optionDelete(".$data_arr->no.")\">삭제</button>
             </td>
         </tr>";
@@ -236,9 +250,13 @@
        <!-- page nav -->
                 <!-- Room List -->
 
+    <div class="btn btn-lg btn-primary" onclick="javascript:hplugin_product_gallery_opt_sortUpdate();" style="cursor:pointer;">순서적용하기</div>
+
             <input type="hidden" name="cpage" id="frm_cpage" value="<?php print $cpage;?>">
             <input type="hidden" name="cid" id="frm_schedule_rid_no" value="">
             <input type="hidden" name="proc" id="frm_schedule_proc" value="">
             </form>
+
+
             
 </div>                  

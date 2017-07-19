@@ -56,18 +56,33 @@
         $a_optval_arr = explode("__##__", $a_opvalue) ; 
         $a_optcnt = count($a_optval_arr);
 
+        $a_ramdom_str = key_generateRandomString();
+
         for($pi =0 ; $pi < $a_optcnt; $pi++){            
-            $a_optval_str .= "<input type=\"text\" name=\"opt_value[]\" size=\"60\" value=\"".$a_optval_arr[$pi]."\" style=\"margin-top:12px;\" >"; 
+            $a_optval_str .= "<div id=\"opt_field_".$a_ramdom_str."_id\" style=\"margin-top:12px;\" ><input type=\"text\" id=\"opt_value_".$a_ramdom_str."+id\" name=\"opt_value[]\" size=\"60\" value=\"".$a_optval_arr[$pi]."\" > <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_opt_del('".$a_ramdom_str."');\" style=\"cursor:pointer\">X</span></div>";
         }
 
 
         if( $pi == 0 ){
-            $a_optval_str = "<input type=\"text\" id=\"opt_value_id\" name=\"opt_value[]\" size=\"60\">";     
+            $a_optval_str = "div id=\"opt_field_00_id\" style=\"margin-top:12px;\" ><input type=\"text\" id=\"opt_value_00_id\" name=\"opt_value[]\" size=\"60\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_opt_del('00');\">X</span></div>";
         }
     } else {
         $a_optval_str = "<input type=\"text\" id=\"opt_value_id\" name=\"opt_value[]\" size=\"60\" disabled >"; 
     }
 
+
+    $a_status_arr = array("","");
+    switch( $a_status){
+        case "Y" :
+            $a_status_arr[0]="checked";
+            break;
+        case "N" :
+            $a_status_arr[1]="checked";
+            break; 
+        default : 
+            $a_status_arr[0]="checked";
+            break;
+    }
     
 ?>
 <script src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>js/hplugin_product_gallery_admin.js"></script>
@@ -116,22 +131,35 @@
                 </td>
             </tr>                       
 
+          
             <tr>
                 <td class="active">필수구분</td>
                 <td>
                     <input type="radio" name="nessesary" value="Y" checked > <span class="label label-primary">필수필드</span>
                     <input type="radio" name="nessesary" value="N"> <span class="label label-success">비필필드</span>
                 </td>
-            </tr>                       
+            </tr>          
+
+
+            <tr>
+                <td class="active">사용여부</td>
+                <td>
+                    <input type="radio" name="usage" value="Y"  <?php echo $a_status_arr[0];?> > <span class="label label-primary">사용</span>
+                    <input type="radio" name="usage" value="N"  <?php echo $a_status_arr[1];?> > <span class="label label-warning">미사용</span>
+                </td>
+            </tr> 
+
 
           </tbody>               
            
     </table>
-    </form>  
+
+    <input type="hidden" name="cid" value="<?php echo $v_cid;?>">
+    </form>   
 
 
-    <div class="ht_room_admin_local_menu">    
-    <span class="label label-primary htobbs_btn" onclick="javascript:hplugin_product_gallery_optionSave();" >옵션 생성</span>
+    <div class="ht_room_admin_local_menu">        
+    <span class="label label-primary htobbs_btn" onclick="javascript:hplugin_product_gallery_optionSave();" >업데이트</span>
     </div>
     
     <div class="both_clear" style="height:30px;"></div>

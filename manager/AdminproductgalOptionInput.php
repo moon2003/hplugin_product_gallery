@@ -46,8 +46,9 @@
             <tr>
                 <td class="active">옵션값 &nbsp; <span class="label label-warning" onclick="javascript:hplugin_product_gallery_opt_add();" style="cursor:pointer">필드추가</span></td>
                 <td id="hplugin_product_gallery_opt_field_id"> 
-                    <input type="text" id="opt_value_id" name="opt_value[]" size="60">
-                    <input type="text" id="opt_value_id" name="opt_value[]" size="60">
+                    <div id="opt_field_00_id" style="margin-top:12px;" ><input type="text" id="opt_value_id" name="opt_value[]" size="60">
+                    <span class="label label-danger" onclick="javascript:hplugin_product_gallery_opt_del('00');" style="cursor:pointer">X</span></div>
+    
                 </td>
             </tr>                       
 

@@ -180,7 +180,7 @@
 <?php
 	if ($_GET['show']=="set") {			
  			require('manager/AdminproductgalOption.php'); 		 			 	
- 	} else if ($_GET['show']=="option-update" || $_GET['show']=="option-save" || $_GET['show']=="option-delete"  ) {
+ 	} else if ($_GET['show']=="option-update" || $_GET['show']=="option-save" || $_GET['show']=="option-delete"  || $_GET['show']=="option-sortupdate" ) {
  			require('manager/AdminproductgalOptionProc.php'); 		 			 	
 	} else if ($_GET['show']=="option-input") {
  			require('manager/AdminproductgalOptionInput.php'); 		 			 	 			

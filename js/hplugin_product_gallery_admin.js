@@ -262,8 +262,10 @@
 
 		if( rvalue != "I" ){ 
 
-			var add_field_str = "<br/>\n<input type=\"text\" name=\"opt_value[]\" size=\"60\" style=\"margin-top:12px;\">";
-			jQuery("#hplugin_product_gallery_opt_field_id").append(add_field_str);
+			var randomstr = key_randomString();
+
+			var add_field_str = "<div id=\"opt_field_"+randomstr+"_id\" style=\"margin-top:12px;\" ><input type=\"text\" id=\"opt_value_"+randomstr+"_id\" name=\"opt_value[]\" size=\"60\" >  <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_opt_del('"+randomstr+"');\" style=\"cursor:pointer\" >X</span><div>";    
+						jQuery("#hplugin_product_gallery_opt_field_id").append(add_field_str);
 
 		} else {
 			alert("INPUT 타입은 옵션값을 설정할수 없습니다.");
@@ -281,7 +283,7 @@
 		errcnt2 = 0;
 		errstr2 = '';
 		
-
+	
 		if ( !jQuery("#opt_name_id").attr("value") ){
 			errcnt++;
 			errstr = "옵션명";
@@ -310,18 +312,13 @@
 	
 		} else {
 	
-			//jQuery('#frm_in_id').submit();
+			jQuery('#frm_in_id').submit();
 			//document.frm_in.submit();
-			//jQuery('#frm_in_id').serialize();
- 	   		jQuery('#frm_in_id').submit();
-
-
 	
 		}
 
 
 
-		 //alert( jQuery("input[name='opt_value[]']").length);
 	}
 
 
@@ -343,17 +340,132 @@
 	}
 
 
+	function hplugin_product_gallery_opt_del(opno){
+
+		jQuery("#opt_field_"+opno+"_id").remove();
+	}
+
+
+
+
+	function hplugin_product_gallery_opt_sort( act , rowno , optno ){
+
+    
+        //var val = [];
+        //console.log( act + " | "+optno );
+
+        // Up일때 
+        if( act == "U"){
+
+        	if( rowno == 0){
+        		alert("이미 최상입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#optionval_"+rowno).html();
+        		// 상단 Layer 읽어옴 
+        		var uphtml = jQuery("#optionval_"+(parseInt(rowno,10)-1) ).html();
+        		
+        		console.log(selfhtml + "\n\n"+uphtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_opt_sort('U',"+rowno+")", "hplugin_product_gallery_opt_sort('U',"+(parseInt(rowno,10)-1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_opt_sort('D',"+rowno+")", "hplugin_product_gallery_opt_sort('D',"+(parseInt(rowno,10)-1)+")" );
+        		uphtml = uphtml.replace("hplugin_product_gallery_opt_sort('U',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_opt_sort('U',"+rowno+")");
+        		uphtml = uphtml.replace("hplugin_product_gallery_opt_sort('D',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_opt_sort('D',"+rowno+")");
+
+        		// 상단에 현제값 적용 
+        		jQuery("#optionval_"+rowno).html( "" );
+        		jQuery("#optionval_"+rowno).append( uphtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#optionval_"+(parseInt(rowno,10)-1) ).html( "" );
+        		jQuery("#optionval_"+(parseInt(rowno,10)-1) ).append( selfhtml );
+
+        		jQuery("#hplugin_product_gallery_sort_status").fadeIn(300);
+
+        	}
+
+        } else if( act =="D"){
+
+        	var downhtml = jQuery("#optionval_"+(parseInt(rowno,10)+1) ).html() ; 
+
+        	if( !downhtml || downhtml == "" ){
+        		alert("이미 최하입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#optionval_"+rowno).html();
+        		// 하단 Layer 읽어옴 
+        		downhtml = jQuery("#optionval_"+(parseInt(rowno,10)+1) ).html();
+        		
+        		console.log(selfhtml + "\n\n"+downhtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_opt_sort('U',"+rowno+")", "hplugin_product_gallery_opt_sort('U',"+(parseInt(rowno,10)+1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_opt_sort('D',"+rowno+")", "hplugin_product_gallery_opt_sort('D',"+(parseInt(rowno,10)+1)+")" );
+        		downhtml = downhtml.replace("hplugin_product_gallery_opt_sort('U',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_opt_sort('U',"+rowno+")");
+        		downhtml = downhtml.replace("hplugin_product_gallery_opt_sort('D',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_opt_sort('D',"+rowno+")");
+
+        		// 하단에 현제값 적용 
+        		jQuery("#optionval_"+rowno).html( "" );
+        		jQuery("#optionval_"+rowno).append( downhtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#optionval_"+(parseInt(rowno,10)+1) ).html( "" );
+        		jQuery("#optionval_"+(parseInt(rowno,10)+1) ).append( selfhtml );
+
+        		jQuery("#hplugin_product_gallery_sort_status").fadeIn(300);
+
+        	}
+
+
+		
+		}
+
+
+        // Down 일때 
+
+        jQuery("input[name='optno[]']").each(function(){
+          //val[i] = $(this).val();
+          console.log( jQuery(this).val()  );
+        });
+    
+ 
+
+	}
+
+
+
+	function hplugin_product_gallery_opt_sortUpdate(){
+
+
+		jQuery("#frm_in").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-sortupdate");
+		//jQuery("#frm_in").submit();
+		document.frm_in.submit();
+
+
+	}
+
+
+
 
 	function hplugin_product_gallery_opttype(tgubun){
 
-		var add_field_str = "<input type=\"text\" id=\"opt_value_id\" name=\"opt_value[]\" size=\"60\" style=\"margin-top:12px;\">";
+
+		var randomstr = key_randomString();
+
+		var add_field_str = "<input type=\"text\" id=\"opt_value_"+randomstr+"_id\" name=\"opt_value[]\" size=\"60\" style=\"margin-top:12px;\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_opt_del('"+randomstr+"');\">X</span>";
 
 		if( tgubun == "C" ){
-			add_field_str = "<input type=\"text\" id=\"opt_value_id\" name=\"opt_value[]\" size=\"60\" style=\"margin-top:12px;\" disabled>";
+			add_field_str = "<input type=\"text\" id=\"opt_value_"+randomstr+"_id\" name=\"opt_value[]\" size=\"60\" style=\"margin-top:12px;\" disabled>";
 		} 
 
 		jQuery("#hplugin_product_gallery_opt_field_id").html(add_field_str);
 	}
+
+
+
 
 
 	function fieldmaxlen( mlen, chkstr){
@@ -368,3 +480,16 @@
 	}	
 
 
+
+
+
+	function key_randomString() {
+		var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		var string_length = 15;
+		var randomstring = '';
+		for (var i=0; i<string_length; i++) {
+			var rnum = Math.floor(Math.random() * chars.length);
+			randomstring += chars.substring(rnum,rnum+1);
+		}		
+		return randomstring;
+	}
