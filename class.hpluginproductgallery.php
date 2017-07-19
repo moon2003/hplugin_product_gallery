@@ -73,12 +73,17 @@
 
 		$icon = HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL . "images/hplugin_product_gallery_icon.png";
 		
-		add_menu_page('H-plugin-product-gallery', 'H-Product-Gallery', 'manage_options', 'hplugin_product_gallery', 'hplugin_ebook_plugiun_optionsp', $icon) ;
-		add_submenu_page( 'hplugin_prodoct_gallery','Gallery Manager', 'Gallery Manager', 'manage_options', 'hplugin-product-gallery-menu','hplugin_product_gallery_optionsp')  ; 
+		add_menu_page('H-plugin-product-gallery', 'H-Product-Gallery', 'manage_options', 'hplugin_product_gallery', 'hplugin_product_gallery_plugiun_optionsp', $icon) ;
+
+		add_submenu_page( 'hplugin_product_gallery','Gallery Manager', 'Gallery Manager', 'manage_options', 'hplugin-product-gallery-menu','hplugin_product_gallery_optionsp')  ; 
+		add_submenu_page( 'hplugin_product_gallery','Option Set', 'Option Set', 'manage_options', 'hplugin-product-gallery-option-menu','hplugin_product_gallery_option_optionsp')  ;
+		add_submenu_page( 'hplugin_product_gallery','Category', 'Category', 'manage_options', 'hplugin-product-gallery-cate-menu','hplugin_product_gallery_cate_optionsp')  ;
 	  	add_submenu_page( 'hplugin_product_gallery','Setting', 'Setting', 'manage_options', 'hplugin-product-gallery-setting-menu','hplugin_product_gallery_setting_optionsp')  ;
 	  		
 		add_options_page( 'hplugin_product_gallery','Gallery Manager', 'Gallery Manager', 'manage_options', 'hplugin-product-gallery-menu','hplugin_product_gallery_optionsp')  ; 
-	  	add_options_page( 'hplugin_product_gallery','Setting', 'Setting', 'manage_options', 'hplugin-product-gallery-setting-menu','hplugin_product_gallert_setting_optionsp')  ; 	  
+		add_options_page( 'hplugin_product_gallery','Option Set', 'Option Set', 'manage_options', 'hplugin-product-gallery-option-menu','hplugin_product_gallery_option_optionsp')  ; 	  
+		add_options_page( 'hplugin_product_gallery','Category', 'Category', 'manage_options', 'hplugin-product-gallery-cate-menu','hplugin_product_gallery_cate_optionsp')  ; 	  
+	  	add_options_page( 'hplugin_product_gallery','Setting', 'Setting', 'manage_options', 'hplugin-product-gallery-setting-menu','hplugin_product_gallery_setting_optionsp')  ; 	  
 	}
 
 
@@ -120,7 +125,7 @@
  	} else if ($_GET['show']=="set-update") {
  			require('manager/AdminproductgalSetProc.php'); 		 			 	
  	} else { 		
- 			require('manager/AdminproductSet.php'); 		 			 	
+ 			require('manager/AdminproductgalSet.php'); 		 			 	
  	}
  	
 ?> 
@@ -130,6 +135,70 @@
 <?php
 
 	}	
+
+
+	function hplugin_product_gallery_cate_optionsp(){
+
+?>
+<div <?php body_class(); ?>  id="hplugin_admin_content_body" > 
+
+ <h2>H-Product-gallery 카테고리 설정</h2>
+ <p>카케고리를 설정추가/수정/삭제 합니다.  </p>
+
+<?php
+	if ($_GET['show']=="set") {			
+ 			require('manager/AdminproductgalCate.php'); 		 			 	
+ 	} else if ($_GET['show']=="cate-update" || $_GET['show']=="cate-save" || $_GET['show']=="cate-delete"  ) {
+ 			require('manager/AdminproductgalCateProc.php'); 		 			 	
+	} else if ($_GET['show']=="cate-input") {
+ 			require('manager/AdminproductgalCateInput.php'); 		 			 	 			
+	} else if ($_GET['show']=="cate-view") {
+ 			require('manager/AdminproductgalCateView.php'); 		 			 	 			
+ 	} else { 		
+ 			require('manager/AdminproductgalCate.php'); 		 			 	
+ 	}
+ 	
+?> 
+ </div>
+
+
+<?php
+
+	}	
+
+
+
+
+	function hplugin_product_gallery_option_optionsp(){
+
+?>
+<div <?php body_class(); ?>  id="hplugin_admin_content_body" > 
+
+ <h2>H-Product-gallery 옵션필드 설정</h2>
+ <p>옵션필드를 설정추가/수정/삭제 합니다.  </p>
+
+<?php
+	if ($_GET['show']=="set") {			
+ 			require('manager/AdminproductgalOption.php'); 		 			 	
+ 	} else if ($_GET['show']=="option-update" || $_GET['show']=="option-save" || $_GET['show']=="option-delete"  ) {
+ 			require('manager/AdminproductgalOptionProc.php'); 		 			 	
+	} else if ($_GET['show']=="option-input") {
+ 			require('manager/AdminproductgalOptionInput.php'); 		 			 	 			
+	} else if ($_GET['show']=="option-view") {
+ 			require('manager/AdminproductgalOptionView.php'); 		 			 	 			
+ 	} else {
+ 			require('manager/AdminproductgalOption.php'); 		 			 	
+ 	}
+ 	
+?> 
+ </div>
+
+
+<?php
+
+	}	
+
+
 
 
 
@@ -367,6 +436,34 @@
 				);";         
 				
 				$wpdb->query( $ht_sql );				
+
+
+
+				$ht_sql = "CREATE TABLE wp_hplugin_product_gallery_cate(
+      	no int(8) NOT null PRIMARY key AUTO_INCREMENT ,       
+      	catecode varchar(20) ,     	      	
+      	catename varchar(200),             	
+      	status char(1) not null default 'Y',
+      	reg_date datetime        
+				);";         
+				
+				$wpdb->query( $ht_sql );		
+
+
+				$ht_sql = "CREATE TABLE wp_hplugin_product_gallery_opt_set(
+      	no int(8) NOT null PRIMARY key AUTO_INCREMENT ,       
+      	name varchar(20) ,     	      	
+      	value varchar(200),             	
+      	type char(1) not null default 'I',			
+      	iconurl varchar(50),
+      	sort int default 0 , 
+      	status char(1) not null default 'Y',
+      	reg_date datetime 
+				);";         
+				
+				$wpdb->query( $ht_sql );		
+
+
 
 
 				$ht_sql = "CREATE TABLE wp_hplugin_product_gallery_img(
