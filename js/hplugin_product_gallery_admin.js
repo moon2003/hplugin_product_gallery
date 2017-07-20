@@ -330,7 +330,7 @@
 		conf = confirm("선택하신 옵션을 삭제하시겠습니까?\n\n기존 등록된 게시물의 옵션사항도 같이삭제되어지게 됩니다.");
 
 		if ( conf === true) {
-			jQuery("#frm_in").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-delete");
+			jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-delete");
 			jQuery("#frm_schedule_rid_no").attr("value", rnum );
 
 			//jQuery("#frm_in").submit();
@@ -464,6 +464,32 @@
 		jQuery("#hplugin_product_gallery_opt_field_id").html(add_field_str);
 	}
 
+
+
+
+	//----- board function -----//
+	function hplugin_product_gallery_img_add( pluginurl ){
+
+		var randomstr = key_randomString();
+
+		var add_field_str = "<div style=\"clear:both;margin-bottom:10px;\" id=\"img_field_"+randomstr+"_id\">";
+        add_field_str += "<div style=\"float:left;min-width:250px;min-height:100px;\"><img src=\""+pluginurl+"images/hplugin_product_gallery_noimage.png\" id=\"upload_img_00_id\" style=\"width:240px; border:1px solid #e7e7e7\" ></div>";
+        add_field_str += "<div style=\"float:left;\"><input type=\"file\" name=\"upload_img\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_imgadd_del('"+randomstr+"');\">X</span></div> ";
+        add_field_str += "</div>";
+
+
+
+
+		jQuery("#hplugin_product_gallery_img_id").append(add_field_str).fadeIn(300);
+
+
+	}
+
+
+
+	function hplugin_product_gallery_imgadd_del(rno){
+		jQuery("#img_field_"+rno+"_id").remove().fadeOut(300);
+	}
 
 
 

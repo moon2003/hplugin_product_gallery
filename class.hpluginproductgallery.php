@@ -259,7 +259,7 @@
 <link rel="stylesheet" type="text/css" href="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>hplugin_product_gallery_admin.css" />
  <div <?php body_class(); ?>  id="hplugin_admin_content_body" > 
  <h2>H-Product Gallery 관리</h2>
- <p>게시물을 등록/수정/삭제할수 있는 관리자 메뉴입니다.</p><br>
+ <p>게시물을 등록/수정/삭제 관리하는 메뉴입니다.</p><br>
  <?php 
  
  	if ( $_GET['show']=="bbsappv-input") { 			
@@ -275,8 +275,8 @@
  	} else if ($_GET['show']=="bbs-preview") {			// 게시판 미리보기 
  			require('manager/AdminbbsBoard.php'); 
 
- 	} else if ($_GET['show']=="ebook-write") {	//게시판 글쓰기  		
- 			require('manager/AdminebookBoardWrite.php');  			
+ 	} else if ($_GET['show']=="board-input") {	// 글쓰기 [관리자]
+ 			require('manager/AdminproductgalBoardInput.php');  			
  	} else if ($_GET['show']=="ebook-save") {		// 게시판 글 저장 
  			require('manager/AdminebookBoardProc.php'); 			
  	} else if ($_GET['show']=="ebook-view") { 	// 게시판 글보기 
@@ -290,7 +290,7 @@
 
 
  	} else {
- 		 	require('manager/AdminebookBoardList.php');				// 게시판 리스트 
+ 		 	require('manager/AdminproductgalBoardList.php');				//  리스트 [관리자]
  	}?>
  </div>		
 <?php		
@@ -417,7 +417,7 @@
       	title varchar(200),     
       	subtitle varchar(200),
       	contents text ,      	
-      	catcode varchar(100),
+      	catecode varchar(100),
       	userid varchar(100),
       	cnt int default 0,
       	status char(1) not null default 'Y' , 
