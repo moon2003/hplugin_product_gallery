@@ -104,7 +104,8 @@
 					a.catecode catecode, 
 					a.status status, 
 					( select b.imgurl FROM wp_hplugin_product_gallery_img b WHERE b.c_no=a.no ORDER BY mark desc , sort asc limit 1 ) imgurl, 
-					( select group_concat( c.catename)  from wp_hplugin_product_gallery_cate c where c.no in ( a.catecode ) ) catename, 
+					-- ( select group_concat( c.catename)  from wp_hplugin_product_gallery_cate c where c.no in ( a.catecode ) ) catename, 
+					a.catecode catecode, 
 					a.reg_date reg_date
 						FROM wp_hplugin_product_gallery  a 
 						WHERE a.status='Y' ORDER BY a.no DESC LIMIT %d, %d ",
@@ -131,14 +132,20 @@
 
 
 
-		$a_catename_arr = explode(",",$data->catename ); 
-		for($ci = 0 ; $ci < count($a_catename_arr ) ; $ci++){
+		$a_catename_str = "";
+
+		if( !!$data_arr->catecode ){ 
+			$sql_query = "SELECT catename FROM wp_hplugin_product_gallery_cate WHERE no in ( ".$data_arr->catecode." )  ";
+			$cate_fd = $wpdb->get_results($sql_query);
+			
+			foreach( $cate_fd as $cdata_arr ){
+
+				$a_catename_str .= "<span class=\"label label-success\">".$cdata_arr->catename."</span>&nbsp;";
+			}
+
+        }
 
 
-			$a_catename_str .= "<span class=\"label label-success\">".$a_catename_arr[$ci]."</span>&nbsp;";
-		}
-
-        
 		print "
 		<tr class=\"active\">
 			<td>".($tot- ( ($cpage-1) * $max_rows) - $Cnt)."</td>

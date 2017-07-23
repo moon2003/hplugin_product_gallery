@@ -277,8 +277,8 @@
 
  	} else if ($_GET['show']=="board-input") {	// 글쓰기 [관리자]
  			require('manager/AdminproductgalBoardInput.php');  			
- 	} else if ($_GET['show']=="ebook-save") {		// 게시판 글 저장 
- 			require('manager/AdminebookBoardProc.php'); 			
+ 	} else if ($_GET['show']=="board-save") {		// 게시판 글 저장 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php'); 			
  	} else if ($_GET['show']=="ebook-view") { 	// 게시판 글보기 
  			require('manager/AdminebookBoardView.php');  		
  	} else if ($_GET['show']=="ebook-edit") { 	// 게시판 글 수정하기 
@@ -416,8 +416,10 @@
       	r_no int(10),
       	title varchar(200),     
       	subtitle varchar(200),
-      	contents text ,      	
+      	contents text ,     
+      	contents2 text, 	
       	catecode varchar(100),
+      	price int(10) default 0,
       	userid varchar(100),
       	cnt int default 0,
       	status char(1) not null default 'Y' , 

@@ -474,7 +474,7 @@
 
 		var add_field_str = "<div style=\"clear:both;margin-bottom:10px;\" id=\"img_field_"+randomstr+"_id\">";
         add_field_str += "<div style=\"float:left;min-width:250px;min-height:100px;\"><img src=\""+pluginurl+"images/hplugin_product_gallery_noimage.png\" id=\"upload_img_00_id\" style=\"width:240px; border:1px solid #e7e7e7\" ></div>";
-        add_field_str += "<div style=\"float:left;\"><input type=\"file\" name=\"upload_img\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_imgadd_del('"+randomstr+"');\">X</span></div> ";
+        add_field_str += "<div style=\"float:left;\"><input type=\"file\" name=\"upload_img[]\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_imgadd_del('"+randomstr+"');\">X</span></div> ";
         add_field_str += "</div>";
 
 
@@ -491,6 +491,24 @@
 		jQuery("#img_field_"+rno+"_id").remove().fadeOut(300);
 	}
 
+
+
+
+	function hplugin_product_gallery_boardSave(){
+
+
+		// Vaildataion 
+		
+
+		// Submit 
+		jQuery("#frm_in_id").submit();
+
+
+	}
+
+
+
+	//----- Extra Commmon fucntion -----//
 
 
 

@@ -35,13 +35,14 @@
 
 
         $a_opt_str .= "<div style=\"clear:both;margin:2px 0 2px 0; min-height:32px;\">
-            <div style=\"float:left;width:20%\"><span class=\"label label-default\" style=\"padding:3px;\">".$opt_arr->name."</span><input type=\"hidden\" name=\"opt_info_".$a_loopcnt."\" value=\"".$opt_arr->no."\"></div>
-            <div style=\"float:left:width:78%\">";
+            <div style=\"float:left;width:10%\"><span class=\"label label-default\" style=\"padding:3px;\">".$opt_arr->name."</span><input type=\"hidden\" name=\"opt_info_".$a_loopcnt."\" value=\"".$opt_arr->no."\"></div>
+            <div style=\"float:left:width:88%\">";
 
         switch($opt_arr->type){
 
             case "I" : 
                 $a_opt_str .= "<input type=\"text\" name=\"opt_".$a_loopcnt."\" value=\"\" style=\"width:70%\">";
+                $a_loopcnt++; 
                 break;
             case "C" : 
 
@@ -88,8 +89,10 @@
         }
 
 
-        $a_opt_str .= "<div></div>";
+        $a_opt_str .= "<div></div>";        
     }
+
+    $a_opt_str .= "<input type=\"hidden\" name=\"optcnt\" value=\"".$a_loopcnt."\">";
 
 ?>
 <script src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>js/hplugin_product_gallery_admin.js"></script>
@@ -103,8 +106,8 @@
 
     <div class="hplugin_admin_local_menu">
         <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="/wp-admin/admin.php?page=hplugin-product-gallery-menu">게시물목록</a></li>
-            <li ><a href="/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-input">게시물생성</a></li>            
+            <li ><a href="/wp-admin/admin.php?page=hplugin-product-gallery-menu">게시물목록</a></li>
+            <li class="active" ><a href="/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-input">게시물생성</a></li>            
         </ul>       
     </div>
                 
@@ -128,9 +131,17 @@
 
 
             <tr>
-                <td class="active">본문내용[HTML가능]</td>
+                <td class="active">본문[HTML가능]</td>
                 <td><textarea id="contents_id" name="contents" style="width:700px;height:400px;"></textarea></td>
             </tr>            
+
+
+
+            <tr>
+                <td class="active">본문2[HTML가능]</td>
+                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:200px;"></textarea></td>
+            </tr>            
+
 
 
             <tr>
@@ -139,6 +150,14 @@
                 <?php echo $a_catecode_str ;?>
                 </td>
             </tr>            
+
+
+            <tr>
+                <td class="active">임대가격</td>
+                <td><input type="text" id="price_id" name="price" style="width:150px; text-align:right">원</td>
+                </td>
+            </tr> 
+
 
 
             <tr>
@@ -154,7 +173,7 @@
                     
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
                         <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="width:240px;" ></div>
-                        <div style="float:left;"><input type="file" name="upload_img"></div>                        
+                        <div style="float:left;"><input type="file" name="upload_img[]"></div>                        
                     </div>
                     
                 </td>
