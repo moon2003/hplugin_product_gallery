@@ -277,16 +277,16 @@
 
  	} else if ($_GET['show']=="board-input") {	// 글쓰기 [관리자]
  			require('manager/AdminproductgalBoardInput.php');  			
- 	} else if ($_GET['show']=="board-save") {		// 게시판 글 저장 [관리자]
+ 	} else if ($_GET['show']=="board-save" ) {		// 게시판 글 저장 [관리자]
  			require('manager/AdminproductgalBoardProc.php'); 			
- 	} else if ($_GET['show']=="ebook-view") { 	// 게시판 글보기 
- 			require('manager/AdminebookBoardView.php');  		
- 	} else if ($_GET['show']=="ebook-edit") { 	// 게시판 글 수정하기 
- 			require('manager/AdminebookBoardWrite.php');  					 	 			 			
- 	} else if ($_GET['show']=="ebook-deletesubmit") {	// 게시판 글 삭제 
- 			require('manager/AdminebookBoardProc.php');  		
- 	} else if ($_GET['show']=="ebook-update") {	// 게시판 글 수정저장 
- 			require('manager/AdminebookBoardProc.php');  	 					 	 			 			
+ 	} else if ($_GET['show']=="board-view") { 	// 게시판 글보기  [관리자]
+ 			require('manager/AdminproductgalBoardView.php');  		
+ 	//} else if ($_GET['show']=="board-update") { 	// 게시판 글 수정하기 [수정하]
+ 	//		require('manager/AdminebookBoardWrite.php');  					 	 			 			
+ 	} else if ($_GET['show']=="board-delete") {	// 게시판 글 삭제 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  		
+ 	} else if ($_GET['show']=="board-update") {	// 게시판 글 수정저장 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  	 					 	 			 			
 
 
  	} else {

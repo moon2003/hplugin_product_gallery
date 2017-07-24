@@ -508,6 +508,22 @@
 
 
 
+	function hplugin_product_gallery_Delete(cno){
+
+
+		var conf = confirm("해당 게시물을 삭제하시겠습니까?");
+
+		if( conf === true) { 
+
+			jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-delete&cid="+cno);
+			jQuery("#cid_id").val(cno);
+			jQuery("#frm_in_id").submit();
+
+		}
+
+
+	}
+
 	//----- Extra Commmon fucntion -----//
 
 

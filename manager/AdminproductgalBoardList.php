@@ -150,7 +150,7 @@
 		<tr class=\"active\">
 			<td>".($tot- ( ($cpage-1) * $max_rows) - $Cnt)."</td>
 			<td><div><img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_imgurl."\" class=\"hplugin_product_gallery_list_thumb\"></div></td>
-			<td><a href=\"/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=cate-view&cid=".$data_arr->no."\">".$data_arr->title."</a></td>			
+			<td><a href=\"/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-view&cid=".$data_arr->no."\">".$data_arr->title."</a></td>			
 			<td>".$a_catename_str."</td>
 			<td>".$a_date_arr[0]." <button type=\"button\" class=\"btn btn-xs btn-danger\" onclick=\"javascript:hplugin_product_gallery_Delete(".$data_arr->no.")\">삭제</button>
 			</td>
@@ -196,7 +196,7 @@
 	$sP = $divSp * $max_page;
 	
 	if  ( $sP > $max_page ){
-		print  "<li><a href='/wp-admin/admin.php?page=hplugin-product-gallery-cate-menu&cpage=".( ($sP-$max_page)-1 ) ."&stype=".$stype."&svalue=".$svalue."&roomnum=".$roomnum."' class=dir>&laquo</a></li>";
+		print  "<li><a href='/wp-admin/admin.php?page=hplugin-product-gallery-menu&cpage=".( ($sP-$max_page)-1 ) ."&stype=".$stype."&svalue=".$svalue."&roomnum=".$roomnum."' class=dir>&laquo</a></li>";
 	} 
 	
     
@@ -205,16 +205,16 @@
 			print "<li class=\"active\"><a href='/wp-admin/admin.php?cpage=".$sP."&stype=".$stype."&svalue=".$svalue."' class=dir>".$sP."</a></li>";
 
 		} else {
-			print "<li><a href='/wp-admin/admin.php?page=hplugin-product-gallery-cate-menu&cpage=".$sP."&stype=".$stype."&svalue=".$svalue."' class=dir>".$sP."</a></li>";
+			print "<li><a href='/wp-admin/admin.php?page=hplugin-product-gallery-menu&cpage=".$sP."&stype=".$stype."&svalue=".$svalue."' class=dir>".$sP."</a></li>";
 
 		}
 	}
 	
 	if ( $eP < $tot_page ) {
-		print "<li ><a href='/wp-admin/admin.php?page=hplugin-product-gallery-cate-menu&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."' class=dir>&raquo</a></li>";
+		print "<li ><a href='/wp-admin/admin.php?page=hplugin-product-gallery-menu&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."' class=dir>&raquo</a></li>";
 
 	} else {
-	    print "<li class=\"disabled\"><a href='/wp-admin/admin.php?page=hplugin-product-gallery-cate-menu&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."' class=dir>&raquo</a></li>";
+	    print "<li class=\"disabled\"><a href='/wp-admin/admin.php?page=hplugin-product-gallery-menu&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."' class=dir>&raquo</a></li>";
 	}
 
 
@@ -229,7 +229,7 @@
 				<!-- Room List -->
 
 			<input type="hidden" name="cpage" id="frm_cpage" value="<?php print $cpage;?>">
-			<input type="hidden" name="cid" id="frm_schedule_rid_no" value="">
+			<input type="hidden" name="cid" id="cid_id" value="">
 			<input type="hidden" name="proc" id="frm_schedule_proc" value="">
 			</form>
 			

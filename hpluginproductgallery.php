@@ -30,8 +30,8 @@ define('HPLUGIN_PRODUCT_GALLERY_VERSION','1.0.0');
 define('HPLUGIN_PRODUCT_GALLERY_MINIMUM_WP_VERSION','3.8.0');
 define('HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL',plugin_dir_url(__FILE__) );
 define('HPLUGIN_PRODUCT_GALLERY__PLUGIN_DIR',plugin_dir_path(__FILE__) );
-define('HPLUGIN_PRODUCT_GALLERY__CONTENT_URL', WP_CONTENT_URL.'/hplugins_product_gallery/'  );
-define('HPLUGIN_PRODUCT_GALLERY__CONTENT_DIR', WP_CONTENT_DIR.'/hplugins_product_gallery/'  );
+define('HPLUGIN_PRODUCT_GALLERY__CONTENT_URL', WP_CONTENT_URL.'/uploads/hplugins_product_gallery/'  );
+define('HPLUGIN_PRODUCT_GALLERY__CONTENT_DIR', WP_CONTENT_DIR.'/uploads/hplugins_product_gallery/'  );
 
 require_once(HPLUGIN_PRODUCT_GALLERY__PLUGIN_DIR.'class.hpluginproductgallery.php');
 
