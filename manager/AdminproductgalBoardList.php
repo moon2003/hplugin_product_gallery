@@ -146,17 +146,29 @@
         }
 
 
+        // Get Image 
+        //$sql_query = sprintf( "SELECT no, title, imgurl, sort, mark FROM wp_hplugin_product_gallery_img WHERE c_no=%d AND status='Y' ORDER by field(mark, 'T','R'), sort asc limit 1 ", $data_arr->no ) ;
+        $sql_query = sprintf( "SELECT no, title, imgurl, sort, mark FROM wp_hplugin_product_gallery_img WHERE c_no=%d AND status='Y' AND mark='T' limit 1 ", $data_arr->no ) ;
+        $img_fd = $wpdb->get_results($sql_query);
+        
+        $a_timg_url = HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL."images/hplugin_product_gallery_noimage.png";
+
+        foreach($img_fd as $img_arr ){
+			$a_timg_url = HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$img_arr->imgurl;
+        }
+
 		print "
 		<tr class=\"active\">
 			<td>".($tot- ( ($cpage-1) * $max_rows) - $Cnt)."</td>
-			<td><div><img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_imgurl."\" class=\"hplugin_product_gallery_list_thumb\"></div></td>
+			<td><div><img src=\"".$a_timg_url."\" class=\"hplugin_product_gallery_list_thumb\"></div></td>
 			<td><a href=\"/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-view&cid=".$data_arr->no."\">".$data_arr->title."</a></td>			
 			<td>".$a_catename_str."</td>
-			<td>".$a_date_arr[0]." <button type=\"button\" class=\"btn btn-xs btn-danger\" onclick=\"javascript:hplugin_product_gallery_Delete(".$data_arr->no.")\">삭제</button>
+			<td>".$a_date_arr[0]." <br><Br>
+			<button type=\"button\" class=\"btn btn-xs btn-primary\" style=\"margin-top:15px;\" onclick=\"javascript:hplugin_product_gallery_set_showcase(".$data_arr->no.")\">진열대적용</button><br>
+			<button type=\"button\" class=\"btn btn-xs btn-danger\" style=\"margin-top:15px;\" onclick=\"javascript:hplugin_product_gallery_Delete(".$data_arr->no.")\">삭제</button>
 			</td>
 		</tr>";
-	
-		
+			
 
 		$Cnt++;
 	}

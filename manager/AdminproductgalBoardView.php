@@ -91,14 +91,14 @@
                 $v_optsetval_arr = array(); 
 
                 foreach( $optsave_fd as $optsave_arr ){
-                    $v_optsetval_arr[$a_optval_loop] = $optsave_arr->value;
-                    $$a_optval_loop++;
+                    $v_optsetval_arr[$a_optval_loop] = trim($optsave_arr->value);
+                    $a_optval_loop++;
                 }
 
                 for($pi=0; $pi < $optcnt ; $pi++){
 
                     $a_optset_checked = "";
-                    if( in_array(  $a_opt_val_arr[$pi] , $v_optsetval_arr ) ){ $a_optset_checked = "checked"; }
+                    if( in_array(  trim($a_opt_val_arr[$pi]) , $v_optsetval_arr ) ){ $a_optset_checked = "checked"; }
 
                     $a_opt_str .= "<input type=\"checkbox\" name=\"opt_".$a_loopcnt."[]\" value=\"".$a_opt_val_arr[$pi]."\" ".$a_optset_checked."  > ".$a_opt_val_arr[$pi]."&nbsp;";    
                 }
@@ -116,8 +116,8 @@
                 $v_optsetval_arr = array(); 
 
                 foreach( $optsave_fd as $optsave_arr ){
-                    $v_optsetval_arr[$a_optval_loop] = $optsave_arr->value;
-                    $$a_optval_loop++;
+                    $v_optsetval_arr[$a_optval_loop] = trim($optsave_arr->value);
+                    $a_optval_loop++;
                 }
 
 
@@ -125,7 +125,7 @@
 
 
                     $a_optset_checked = "";
-                    if( in_array(  $a_opt_val_arr[$pi] , $v_optsetval_arr ) ){ $a_optset_checked = "checked"; }
+                    if( in_array(  trim($a_opt_val_arr[$pi]) , $v_optsetval_arr ) ){ $a_optset_checked = "checked"; }
 
                     $a_opt_str .= "<input type=\"radio\" name=\"opt_".$a_loopcnt."\" value=\"".$a_opt_val_arr[$pi]."\" ".$a_optset_checked." > ".$a_opt_val_arr[$pi]."&nbsp;";    
                 }
@@ -142,8 +142,8 @@
                 $v_optsetval_arr = array(); 
 
                 foreach( $optsave_fd as $optsave_arr ){
-                    $v_optsetval_arr[$a_optval_loop] = $optsave_arr->value;
-                    $$a_optval_loop++;
+                    $v_optsetval_arr[$a_optval_loop] = trim($optsave_arr->value);
+                    $a_optval_loop++;
                 }
 
 
@@ -151,7 +151,7 @@
                 for($pi=0; $pi < $optcnt ; $pi++){
 
                     $a_optset_checked = "";
-                    if( in_array(  $a_opt_val_arr[$pi] , $v_optsetval_arr ) ){ $a_optset_checked = "selected"; }
+                    if( in_array(  trim($a_opt_val_arr[$pi]) , $v_optsetval_arr ) ){ $a_optset_checked = "selected"; }
 
                     $a_opt_str .= "<option value=\"".$a_opt_val_arr[$pi]."\" ".$a_optset_checked." >".$opt_val_arr[$pi]."</option>";    
                 }                
@@ -180,6 +180,8 @@
 
     $a_img_str = "";
 
+    $iloopcnt = 0 ;
+
     foreach( $img_fd as $img_arr ){
 
 
@@ -191,13 +193,46 @@
 
 
         $a_img_str .= "
-                    <div style=\"clear:both;margin-bottom:10px;\" id=\"img_field_xx_id\">
-                        <div style=\"float:left;min-width:250px;min-height:100px;\"><img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_img_url."\" id=\"upload_img_xx_id\" border=\"1px\" style=\"width:240px;\" ></div>
-                        <div style=\"float:left;\"><span class=\"label label-danger\" style=\"padding:3px;\">이미지 삭제</span></div>                        
+                    <div style=\"clear:both;margin-bottom:30px;\" id=\"img_upload_".$iloopcnt."\">
+                        <div style=\"float:left;min-width:250px;min-height:100px; margin-bottom:20px;\">
+                        <input type=\"hidden\" name=\"imgsortno[]\" value=\"".$a_img_no."\">
+                        <img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_img_url."\" id=\"upload_img_xx_id\" border=\"1px\" style=\"width:240px;\" ></div>
+                        <div style=\"float:left;\">
+                        <span class=\"label label-danger\" style=\"padding:3px;cursor:pointer;\" onclick=\"javascript:hplugin_product_gallery_imgdel( ".$a_img_no." , ".$v_cid." );\">이미지 삭제</span>&nbsp;
+                        <span class=\"label label-info\" style=\"padding:3px;cursor:pointer;\" onclick=\"javascript:hplugin_product_gallery_set_img( ".$a_img_no." , ".$v_cid."  ,'T' );\">썸네일 지정</span>&nbsp;
+                        <span class=\"label label-primary\" style=\"padding:3px;cursor:pointer;\" onclick=\"javascript:hplugin_product_gallery_set_img( ".$a_img_no." , ".$v_cid." ,'R' );\">View 대표지정</span>
+
+                            <br><br><i class=\"glyphicon glyphicon-arrow-up\" style=\"cursor:pointer;color:red\" onclick=\"javascript:hplugin_product_gallery_image_sort('U',".$iloopcnt.");\"></i> 
+                            <i class=\"glyphicon glyphicon-arrow-down\" style=\"cursor:pointer;color:blue\" onclick=\"javascript:hplugin_product_gallery_image_sort('D',".$iloopcnt.");\" /></i>
+                        </div>                        
                     </div>
                 ";
 
+        $iloopcnt++;
+
     }
+
+
+
+    // Get Thumbnail image 
+    $sql_query = sprintf("SELECT no, imgurl FROM wp_hplugin_product_gallery_img WHERE c_no=%d AND status='Y' AND mark='T' limit 1", $v_cid) ;
+    $timg_fd = $wpdb->get_results ($sql_query ) ;
+
+    $a_thumbimg_str = HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL."images/hplugin_product_gallery_noimage.png";
+
+    foreach( $timg_fd as $timg_arr){
+        $a_thumbimg_str = HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$timg_arr->imgurl;
+    }
+
+    // Get Present image 
+    $sql_query = sprintf("SELECT no, imgurl FROM wp_hplugin_product_gallery_img WHERE status='Y' AND mark2='R' limit 1", $v_cid);
+    $rimg_fd = $wpdb->get_results ($sql_query ) ;
+
+    $a_repreimg_str = HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL."images/hplugin_product_gallery_noimage.png";
+
+    foreach( $rimg_fd as $rimg_arr){
+        $a_repreimg_str = HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$rimg_arr->imgurl;
+    }    
 
 
 
@@ -274,10 +309,44 @@
                 </td>
             </tr>                       
 
+
+            <tr>
+                <td class="active">썸네일 / View 대표 이미지 </td>
+                <td>
+
+                        
+
+                    <div style="clear:both;margin-bottom:10px;" id="img_thumb_id">                    
+                        <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
+                            <div class="alert alert-info">썸네일 이미지</div>
+                            <img src="<?php echo $a_thumbimg_str;?>" id="upload_img_00_id" border="1px" style="width:240px;" >
+                            <br>
+                            <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'T' );">Clear</span>
+                        </div>
+                        <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
+                            <div class="alert alert-info">View 대표 이미지</div>
+                            <img src="<?php echo $a_repreimg_str;?>" id="upload_img_00_id" border="1px" style="width:240px;" >
+                            <br>
+                            <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'R' );">Clear</span>
+                        </div>                        
+                    </div>                        
+
+
+                </td>
+            </tr>                       
+
+
+
+
             <tr>
                 <td class="active">이미지업로드  &nbsp; <span class="label label-warning" onclick="javascript:hplugin_product_gallery_img_add('<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>');" style="cursor:pointer">이미지추가</span> </td>
                 <td id="hplugin_product_gallery_img_id">
                     
+                    <div id="hplugin_product_gallery_sort_info" style="display:none;clear:both;height:30px;">
+                        <span style="color:red">* 이미지 순서가 변경되었습니다. 옆의 버튼을 누르면 반영됩니다. </span> &nbsp;&nbsp;
+                        <span class="btn btn-primary btn-xs" onclick="javascript:hplugin_product_gallery_image_sortsave(<?php echo $v_cid;?>);">순서적용반영</span>
+                    </div>
+
                     <?php echo $a_img_str;?>
 
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
@@ -287,6 +356,9 @@
                     
                 </td>
             </tr>      
+
+
+
 
 
             <!--tr>

@@ -22,6 +22,8 @@
             $v_catecode     = $_POST["catecode"];
             $v_display_mode = $_POST["display_mode"] ;             
             $v_banner_slide = $_POST["banner_slide"];
+            $v_viewurl      = $_POST["viewurl"];
+
 
             $v_catecode = rtrim ( ltrim ( $v_catecode , ',' ) , ',' ) ;
 
@@ -45,7 +47,8 @@
                         array ( 'name'=>'listrownum' , 'value'=>$v_listrowcnt , 'status'=>'Y'  )   , 
                         array ( 'name'=>'etype' , 'value'=>$v_etype, 'status'=>'Y'  )    , 
                         array ( 'name'=>'displaymode' , 'value'=>$v_display_mode , 'status'=>'Y'  ) , 
-                        array ( 'name'=>'banner_thumbnail' , 'value'=>$v_banner_slide , 'status'=>'Y'  )  // Banner slide check 
+                        array ( 'name'=>'banner_thumbnail' , 'value'=>$v_banner_slide , 'status'=>'Y'  ) , // Banner slide check 
+                        array ( 'name'=>'viewurl' , 'value'=>$v_viewurl , 'status'=>'Y'  ) ,
     
                     );
     

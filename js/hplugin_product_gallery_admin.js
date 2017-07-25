@@ -348,7 +348,7 @@
 
 
 
-	function hplugin_product_gallery_opt_sort( act , rowno , optno ){
+	function hplugin_product_gallery_opt_sort( act , rowno ){
 
     
         //var val = [];
@@ -523,6 +523,254 @@
 
 
 	}
+
+
+
+
+	function hplugin_product_gallery_imgdel(ino , cno ){
+
+		var conf = confirm("해당 이미지를 삭제하시겠습니까?");
+
+		if( conf === true ){
+
+			jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=image-delete&cid="+cno+"&imgno="+ino);
+			jQuery("#cid_id").val(cno);
+			jQuery("#frm_in_id").submit();
+		}
+
+	}
+
+
+
+	function hplugin_product_gallery_image_sort(act , rowno){
+
+
+    // Up일때 
+        if( act == "U"){
+
+        	if( rowno == 0){
+        		alert("이미 최상입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#img_upload_"+rowno).html();
+        		// 상단 Layer 읽어옴 
+        		var uphtml = jQuery("#img_upload_"+(parseInt(rowno,10)-1) ).html();
+        		
+        		//console.log(selfhtml + "\n\n"+uphtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_image_sort('U',"+rowno+")", "hplugin_product_gallery_image_sort('U',"+(parseInt(rowno,10)-1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_image_sort('D',"+rowno+")", "hplugin_product_gallery_image_sort('D',"+(parseInt(rowno,10)-1)+")" );
+        		uphtml = uphtml.replace("hplugin_product_gallery_image_sort('U',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_image_sort('U',"+rowno+")");
+        		uphtml = uphtml.replace("hplugin_product_gallery_image_sort('D',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_image_sort('D',"+rowno+")");
+
+        		// 상단에 현제값 적용 
+        		jQuery("#img_upload_"+rowno).html( "" );
+        		jQuery("#img_upload_"+rowno).append( uphtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#img_upload_"+(parseInt(rowno,10)-1) ).html( "" );
+        		jQuery("#img_upload_"+(parseInt(rowno,10)-1) ).append( selfhtml );
+
+        		// 순서변경 사항 표시 
+        		jQuery("#hplugin_product_gallery_sort_info").fadeIn(300);
+
+        	}
+
+        } else if( act =="D"){
+
+        	var downhtml = jQuery("#img_upload_"+(parseInt(rowno,10)+1) ).html() ; 
+
+        	if( !downhtml || downhtml == "" ){
+        		alert("이미 최하입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#img_upload_"+rowno).html();
+        		// 하단 Layer 읽어옴 
+        		downhtml = jQuery("#img_upload_"+(parseInt(rowno,10)+1) ).html();
+        		
+        		console.log(selfhtml + "\n\n"+downhtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_image_sort('U',"+rowno+")", "hplugin_product_gallery_image_sort('U',"+(parseInt(rowno,10)+1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_image_sort('D',"+rowno+")", "hplugin_product_gallery_image_sort('D',"+(parseInt(rowno,10)+1)+")" );
+        		downhtml = downhtml.replace("hplugin_product_gallery_image_sort('U',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_image_sort('U',"+rowno+")");
+        		downhtml = downhtml.replace("hplugin_product_gallery_image_sort('D',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_image_sort('D',"+rowno+")");
+
+        		// 하단에 현제값 적용 
+        		jQuery("#img_upload_"+rowno).html( "" );
+        		jQuery("#img_upload_"+rowno).append( downhtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#img_upload_"+(parseInt(rowno,10)+1) ).html( "" );
+        		jQuery("#img_upload_"+(parseInt(rowno,10)+1) ).append( selfhtml );
+
+        		// 순서변경 사항 표시 
+        		jQuery("#hplugin_product_gallery_sort_info").fadeIn(300);
+
+        	}
+
+
+		
+		}
+
+	}
+
+
+	function hplugin_product_gallery_image_sortsave(cno){
+
+		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=image-sort&cid="+cno);
+		jQuery("#cid_id").val(cno);
+		jQuery("#frm_in_id").submit();
+
+	}
+
+
+
+
+	function hplugin_product_gallery_set_img( imgno , cno, iset){
+
+		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=image-set&cid="+cno+"&imgno="+imgno+"&iset="+iset);
+		jQuery("#cid_id").val(cno);
+		jQuery("#frm_in_id").submit();
+
+	}
+
+
+	function hplugin_product_gallery_set_showcase(cno){
+
+		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=showcase-set&cid="+cno);
+		jQuery("#cid_id").val(cno);
+		jQuery("#frm_in_id").submit();
+
+	}
+
+
+
+
+
+
+	function hplugin_product_gallery_showcase_sort(act , rowno){
+
+
+    // Up일때 
+        if( act == "U"){
+
+        	if( rowno == 0){
+        		alert("이미 최상입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#showcase_"+rowno).html();
+        		// 상단 Layer 읽어옴 
+        		var uphtml = jQuery("#showcase_"+(parseInt(rowno,10)-1) ).html();
+        		
+        		//console.log(selfhtml + "\n\n"+uphtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_showcase_sort('U',"+rowno+")", "hplugin_product_gallery_showcase_sort('U',"+(parseInt(rowno,10)-1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_showcase_sort('D',"+rowno+")", "hplugin_product_gallery_showcase_sort('D',"+(parseInt(rowno,10)-1)+")" );
+        		uphtml = uphtml.replace("hplugin_product_gallery_showcase_sort('U',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_showcase_sort('U',"+rowno+")");
+        		uphtml = uphtml.replace("hplugin_product_gallery_showcase_sort('D',"+(parseInt(rowno,10)-1)+")" , "hplugin_product_gallery_showcase_sort('D',"+rowno+")");
+
+        		// 상단에 현제값 적용 
+        		jQuery("#showcase_"+rowno).html( "" );
+        		jQuery("#showcase_"+rowno).append( uphtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#showcase_"+(parseInt(rowno,10)-1) ).html( "" );
+        		jQuery("#showcase_"+(parseInt(rowno,10)-1) ).append( selfhtml );
+
+        		// 순서변경 사항 표시 
+        		jQuery("#hplugin_product_gallery_showcase_sort_btn").fadeIn(300);
+
+        	}
+
+        } else if( act =="D"){
+
+        	var downhtml = jQuery("#showcase_"+(parseInt(rowno,10)+1) ).html() ; 
+
+        	if( !downhtml || downhtml == "" ){
+        		alert("이미 최하입니다.");
+        	} else {
+
+        		// 본인 Layyer 읽어옴 
+        		var selfhtml = jQuery("#showcase_"+rowno).html();
+        		// 하단 Layer 읽어옴 
+        		downhtml = jQuery("#showcase_"+(parseInt(rowno,10)+1) ).html();
+        		
+        		console.log(selfhtml + "\n\n"+downhtml);
+
+        		
+        		// 순서변경 
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_showcase_sort('U',"+rowno+")", "hplugin_product_gallery_showcase_sort('U',"+(parseInt(rowno,10)+1)+")" );
+        		selfhtml = selfhtml.replace("hplugin_product_gallery_showcase_sort('D',"+rowno+")", "hplugin_product_gallery_showcase_sort('D',"+(parseInt(rowno,10)+1)+")" );
+        		downhtml = downhtml.replace("hplugin_product_gallery_showcase_sort('U',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_showcase_sort('U',"+rowno+")");
+        		downhtml = downhtml.replace("hplugin_product_gallery_showcase_sort('D',"+(parseInt(rowno,10)+1)+")" , "hplugin_product_gallery_showcase_sort('D',"+rowno+")");
+
+        		// 하단에 현제값 적용 
+        		jQuery("#showcase_"+rowno).html( "" );
+        		jQuery("#showcase_"+rowno).append( downhtml );
+        		// 본인에 상단값  적용 
+        		jQuery("#showcase_"+(parseInt(rowno,10)+1) ).html( "" );
+        		jQuery("#showcase_"+(parseInt(rowno,10)+1) ).append( selfhtml );
+
+        		// 순서변경 사항 표시 
+        		jQuery("#hplugin_product_gallery_showcase_sort_btn").fadeIn(300);
+
+        	}
+
+
+		
+		}
+
+	}
+
+
+	function hplugin_product_gallery_opt_sortUpdate(){
+
+
+		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-showcase-menu&show=showcase-sort");		
+		jQuery("#frm_in_id").submit();
+
+	}
+
+
+
+	function hplugin_product_gallery_showcase_update( sno , loopcnt ){
+
+		var pageinfo = jQuery("#viewurl_"+loopcnt).val();
+		jQuery("#pageurl_id").val( pageinfo );
+		jQuery("#cid_id").val( sno );
+
+		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-showcase-menu&show=showcase-update");		
+		jQuery("#frm_in_id").submit();
+
+	}	
+
+
+
+	function hplugin_product_gallery_showcase_del(sno){
+
+		var conf = confirm("해당 게시물을 진열목록에서 삭제하시겠습니까?");
+
+		if( conf === true ){ 
+
+			jQuery("#cid_id").val( sno );
+			jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-showcase-menu");		
+			jQuery("#frm_in_id").submit();
+		}
+
+	}
+
+
+
+
+
+
+
 
 	//----- Extra Commmon fucntion -----//
 

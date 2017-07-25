@@ -624,10 +624,324 @@
 
 
 
+    } else if ( $_GET['show'] == "image-delete"){ //----- image delete   -----//    
+
+        if ( !$_SESSION['hplugins_pgallery_session'] || $_SESSION['hplugins_pgallery_session'] == "")  {  // 그냥 나감 
+            
+            
+        } else {
+
+            // 세션 취소시킴 : 중복전송 방지  
+            $_SESSION['hplugins_pgallery_session'] = "";
+        
+            global $wpdb;
+
+            $v_cid = $_GET["cid"];
+            $v_imgno = $_GET["imgno"]; 
+
+            if( !$v_cid) $v_cid = $_POST["cid"];
+
+
+            // image file delete 
+            $sql_query = sprintf("SELECT imgurl FROM wp_hplugin_product_gallery_img WHERE c_no=%d AND no=%d", $v_cid, $v_imgno);
+
+            $img_fd = $wpdb->get_results($sql_query);
+
+            foreach( $img_fd as $img_arr){
+                
+                $a_imgurl = $img_arr->imgurl;
+
+                if( $a_imgurl){
+                    
+                    $file_upload_path = HPLUGIN_PRODUCT_GALLERY__CONTENT_DIR.$a_imgurl;
+                    if( file_exists($file_upload_path)){
+                        @unlink( $file_upload_path );
+                    }
+                }
+            }
+
+
+            // Delete image db 
+            $wpdb->delete('wp_hplugin_product_gallery_img',
+                array(
+                'c_no'=>$v_cid,
+                'no'=>$v_imgno
+                ),
+                array(
+                '%d',
+                '%d'
+                ) 
+            ) ;
+
+
+
+            $return_url = "alert('이미지가  삭제되었습니다. '); 
+            jQuery(location).attr('href','/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-view&cid=".$v_cid."');";
+
+
+
+
+
+        }
+
+
+    } else if ( $_GET['show'] == "image-sort"){ //----- image delete   -----//    
+
+        if ( !$_SESSION['hplugins_pgallery_session'] || $_SESSION['hplugins_pgallery_session'] == "")  {  // 그냥 나감 
+            
+            
+        } else {
+
+            // 세션 취소시킴 : 중복전송 방지  
+            $_SESSION['hplugins_pgallery_session'] = "";
+        
+            global $wpdb;
+
+            $v_cid = $_GET["cid"];
+            
+            if( !$v_cid) $v_cid = $_POST["cid"];
+
+            $v_imgno_arr = $_POST["imgsortno"]; 
+
+
+            for ( $oi =0 ; $oi < count($v_imgno_arr); $oi++ ){
+
+
+                $wpdb->update('wp_hplugin_product_gallery_img',
+            
+                array( 
+                    'sort' => ($oi+1)                    
+                ),
+                array(
+                    'no'=>$v_imgno_arr[$oi]
+                ),
+                array(
+                    '%d'
+                ),
+                array(
+                    '%d'
+                )
+
+                );
+
+
+                echo "sort :  ".$v_imgno_arr[$oi]." /  ".($oi+1) ."<br><br>" ;
+
+            }
+                
+
+
+            $return_url = "alert('이미지의 순서가 정렬되었습니다.'); 
+            jQuery(location).attr('href','/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-view&cid=".$v_cid."');";
+
+
+
+
+
+        }
+
+
+    } else if ( $_GET['show'] == "image-set"){ //----- image delete   -----//    
+
+        if ( !$_SESSION['hplugins_pgallery_session'] || $_SESSION['hplugins_pgallery_session'] == "")  {  // 그냥 나감 
+            
+            
+        } else {
+
+            // 세션 취소시킴 : 중복전송 방지  
+            $_SESSION['hplugins_pgallery_session'] = "";
+        
+            global $wpdb;
+
+            $v_cid = $_GET["cid"];
+            $v_imgno = $_GET["imgno"];
+            $v_iset = $_GET["iset"];
+
+
+            if( !$v_cid) $v_cid = $_POST["cid"];
+
+            $v_imgno_arr = $_POST["imgsortno"]; 
+
+
+            //  Clear set 
+
+            if( $v_iset == "T" ){ 
+
+                $wpdb->update('wp_hplugin_product_gallery_img',
+            
+                    array( 
+                        'mark' => ''
+                    ),
+                    array(
+                        'c_no'=>$v_cid
+                    ),
+                    array(
+                        '%s'
+                    ),
+                    array(
+                        '%d'
+                    )
+                );
+
+
+                if( $v_imgno != "" && !!$v_imgno ){ 
+
+                    $wpdb->update('wp_hplugin_product_gallery_img',
+            
+                    array( 
+                        'mark' => 'T'
+                    ),
+                    array(
+                        'c_no'=>$v_cid,
+                        'no'=>$v_imgno
+                    ),
+                    array(
+                        '%s'
+                    ),
+                    array(
+                        '%d',
+                        '%d'
+                    )
+                    );
+                }
+
+
+
+            } else if( $v_iset == "R"){
+
+                $wpdb->update('wp_hplugin_product_gallery_img',
+            
+                    array( 
+                        'mark2' => ''
+                    ),
+                    array(
+                        'c_no'=>$v_cid
+                    ),
+                    array(
+                        '%s'
+                    ),
+                    array(
+                        '%d'
+                    )
+                );
+
+
+                if( $v_imgno && !!$v_imgno  ){ 
+
+                    $wpdb->update('wp_hplugin_product_gallery_img',
+            
+                    array( 
+                        'mark2' => 'R'
+                    ),
+                    array(
+                        'c_no'=>$v_cid,
+                        'no'=>$v_imgno
+                    ),
+                    array(
+                        '%s'
+                    ),
+                    array(
+                        '%d',
+                        '%d'
+                    )
+                    );
+                }
+
+
+            }
+
+
+
+            echo "img info : ".$v_imgno." / ".$v_iset;
+
+            $return_url = "alert('이미지가 설정되었습니다.'); 
+            jQuery(location).attr('href','/wp-admin/admin.php?page=hplugin-product-gallery-menu&show=board-view&cid=".$v_cid."');";
+
+
+
+
+
+        }
+
+
+    } else if ( $_GET['show'] == "showcase-set"){ //----- image delete   -----//    
+
+        if ( !$_SESSION['hplugins_pgallery_session'] || $_SESSION['hplugins_pgallery_session'] == "")  {  // 그냥 나감 
+            
+            
+        } else {
+
+            // 세션 취소시킴 : 중복전송 방지  
+            $_SESSION['hplugins_pgallery_session'] = "";
+        
+            global $wpdb;
+
+            $v_cid = $_GET["cid"];            
+            if( !$v_cid) $v_cid = $_POST["cid"];
+            
+
+            // Check Previos value 
+
+            $sql_query = sprintf("SELECT count(no) ccnt FROM wp_hplugin_product_gallery_showcase WHERE c_no=%d", $v_cid) ;
+            $chkcnt = $wpdb->get_var($sql_query);
+
+
+            if ( $chkcnt == 0 ) {
+
+
+                // Get max sort no 
+                $sql_query = "SELECT ifnull( max(no), 0 ) mcnt  FROM  wp_hplugin_product_gallery_showcase";
+
+                $max_fd = $wpdb->get_results($sql_query);
+                $max_num_plus = 0 ; 
+                foreach( $max_fd as $max_arr){
+                    $max_num_plus = (int)($max_arr->mcnt) + 1 ;                 
+                }
+
+
+
+                $wpdb->insert('wp_hplugin_product_gallery_showcase',
+            
+                    array( 
+                    'c_no' => $v_cid,
+                    'viewurl'=> '',
+                    'sort' => $max_num_plus,
+                    'status' =>'Y',
+                    'reg_date' => current_time('mysql', 1) 
+                    ),
+
+                    array(
+                        '%d',
+                        '%s',
+                        '%d',
+                        '%s',
+                        '%s'
+                    )
+
+                );
+
+                
+            }
+                
+
+
+            $return_url = "alert('진열목록으로 설정되었습니다.'); 
+            jQuery(location).attr('href','/wp-admin/admin.php?page=hplugin-product-gallery-menu');";
+
+
+
+
+
+        }
+
+
     }
+
+
 ?>
 
 
 <script>
 <?php  print $return_url ;?>
 </script>
+

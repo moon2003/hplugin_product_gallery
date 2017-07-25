@@ -19,6 +19,8 @@
     $a_gallery_type = $a_product_gallert_set_arr['gtype'];
     $a_display_mode = $a_product_gallert_set_arr['displaymode'];
 
+    $a_viewurl = $a_product_gallert_set_arr['viewurl'];
+
     //$a_banner_thumbchk = $a_product_gallert_set_arr['banner_thumbnail'];
 
 
@@ -133,6 +135,13 @@
                 <?php print $a_listrow_str; ?>
                 </select></td>
             </tr>
+
+
+            <tr>
+                <td class="active">진열목록 BASE PAGE URL</td>
+                <td><input type="text" value="<?php print $a_viewurl; ?>" name="viewurl"  id="viewurl_id" style="width:400px;" placeholder="http://www.domain.com?page_id=xx" ></td>
+            </tr>            
+
 
 
 <?php 

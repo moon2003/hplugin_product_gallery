@@ -76,11 +76,13 @@
 		add_menu_page('H-plugin-product-gallery', 'H-Product-Gallery', 'manage_options', 'hplugin_product_gallery', 'hplugin_product_gallery_plugiun_optionsp', $icon) ;
 
 		add_submenu_page( 'hplugin_product_gallery','Gallery Manager', 'Gallery Manager', 'manage_options', 'hplugin-product-gallery-menu','hplugin_product_gallery_optionsp')  ; 
+		add_submenu_page( 'hplugin_product_gallery','Showcase Manager', 'Showcase Manager', 'manage_options', 'hplugin-product-gallery-showcase-menu','hplugin_product_gallery_showcasesp')  ; 
 		add_submenu_page( 'hplugin_product_gallery','Option Set', 'Option Set', 'manage_options', 'hplugin-product-gallery-option-menu','hplugin_product_gallery_option_optionsp')  ;
 		add_submenu_page( 'hplugin_product_gallery','Category', 'Category', 'manage_options', 'hplugin-product-gallery-cate-menu','hplugin_product_gallery_cate_optionsp')  ;
 	  	add_submenu_page( 'hplugin_product_gallery','Setting', 'Setting', 'manage_options', 'hplugin-product-gallery-setting-menu','hplugin_product_gallery_setting_optionsp')  ;
 	  		
 		add_options_page( 'hplugin_product_gallery','Gallery Manager', 'Gallery Manager', 'manage_options', 'hplugin-product-gallery-menu','hplugin_product_gallery_optionsp')  ; 
+		add_options_page( 'hplugin_product_gallery','Showcase Manager', 'Showcase Manager', 'manage_options', 'hplugin-product-gallery-showcase-menu','hplugin_product_gallery_showcasesp')  ; 
 		add_options_page( 'hplugin_product_gallery','Option Set', 'Option Set', 'manage_options', 'hplugin-product-gallery-option-menu','hplugin_product_gallery_option_optionsp')  ; 	  
 		add_options_page( 'hplugin_product_gallery','Category', 'Category', 'manage_options', 'hplugin-product-gallery-cate-menu','hplugin_product_gallery_cate_optionsp')  ; 	  
 	  	add_options_page( 'hplugin_product_gallery','Setting', 'Setting', 'manage_options', 'hplugin-product-gallery-setting-menu','hplugin_product_gallery_setting_optionsp')  ; 	  
@@ -162,9 +164,45 @@
  </div>
 
 
+
 <?php
 
 	}	
+
+
+	function hplugin_product_gallery_showcasesp(){
+
+?>
+<div <?php body_class(); ?>  id="hplugin_admin_content_body" > 
+
+ <h2>H-Product-gallery 진열목록 설정</h2>
+ <p>사이트 메인 페이지에 나오는 목록을 수정/삭제 합니다.  </p>
+
+<?php
+	if ($_GET['show']=="showcase-sort") {			
+ 			require('manager/AdminproductgalShowcaseProc.php'); 
+ 	} else if ($_GET['show']=="showcase-update") {			
+ 			require('manager/AdminproductgalShowcaseProc.php'); 
+	} else if ($_GET['show']=="showcase-delete") {			
+ 			require('manager/AdminproductgalShowcaseProc.php'); 
+	} else if ($_GET['show']=="cate-view") {
+ 			require('manager/AdminproductgalCateView.php'); 		 			 	 			
+ 	} else { 		
+ 			require('manager/AdminproductgalShowcase.php'); 		 			 	
+ 	}
+ 	
+?> 
+ </div>
+
+
+
+<?php
+
+	}	
+
+
+
+
 
 
 
@@ -262,33 +300,24 @@
  <p>게시물을 등록/수정/삭제 관리하는 메뉴입니다.</p><br>
  <?php 
  
- 	if ( $_GET['show']=="bbsappv-input") { 			
- 			require('manager/AdminbbsappvInput.php');       // 게시판 생성
- 	} else if ($_GET['show']=="bbsappv-save") {    		
- 			require('manager/AdminbbsappvProc.php');  		// 게시판 프로세스 
- 	} else if ($_GET['show']=="bbsappv-view") {
- 			require('manager/AdminbbsappvView.php'); 		// 게시판 보기  			
-	} else if ($_GET['show']=="bbsappv-update") {  			
-			require('manager/AdminbbsappvProc.php');  		// 게시판 수정저장 
- 	} else if ($_GET['show']=="bbsappv-delete") { 				 			
- 			require('manager/AdminbbsappvProc.php');  
- 	} else if ($_GET['show']=="bbs-preview") {			// 게시판 미리보기 
- 			require('manager/AdminbbsBoard.php'); 
-
- 	} else if ($_GET['show']=="board-input") {	// 글쓰기 [관리자]
+	if ($_GET['show']=="board-input") {	// 글쓰기 [관리자]
  			require('manager/AdminproductgalBoardInput.php');  			
  	} else if ($_GET['show']=="board-save" ) {		// 게시판 글 저장 [관리자]
  			require('manager/AdminproductgalBoardProc.php'); 			
  	} else if ($_GET['show']=="board-view") { 	// 게시판 글보기  [관리자]
  			require('manager/AdminproductgalBoardView.php');  		
- 	//} else if ($_GET['show']=="board-update") { 	// 게시판 글 수정하기 [수정하]
- 	//		require('manager/AdminebookBoardWrite.php');  					 	 			 			
  	} else if ($_GET['show']=="board-delete") {	// 게시판 글 삭제 [관리자]
  			require('manager/AdminproductgalBoardProc.php');  		
  	} else if ($_GET['show']=="board-update") {	// 게시판 글 수정저장 [관리자]
  			require('manager/AdminproductgalBoardProc.php');  	 					 	 			 			
-
-
+	} else if ($_GET['show']=="image-delete") { 	// 이미지 개별 삭제 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  					 	 			 			
+	} else if ($_GET['show']=="image-sort") { 	// 이미지 순서적용 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  					 	 			 			 			
+	} else if ($_GET['show']=="image-set") { 	// 이미지 썸네일지정 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  					 	 			 			 			 			
+	} else if ($_GET['show']=="showcase-set") { 	//  진열대 지정 [관리자]
+ 			require('manager/AdminproductgalBoardProc.php');  					 	 			 			 			 			 			
  	} else {
  		 	require('manager/AdminproductgalBoardList.php');				//  리스트 [관리자]
  	}?>
@@ -468,6 +497,19 @@
 
 
 
+				$ht_sql = "CREATE TABLE wp_hplugin_product_gallery_showcase(
+      	no int(8) NOT null PRIMARY key AUTO_INCREMENT ,       
+      	c_no int(8),     	      	
+      	viewurl varchar(100),      	
+      	sort int default 0 , 
+      	status char(1) not null default 'Y',
+      	reg_date datetime 
+				);";         
+				
+				$wpdb->query( $ht_sql );	
+
+
+
 				$ht_sql = "CREATE TABLE wp_hplugin_product_gallery_img(
       	no int(8) NOT null PRIMARY key AUTO_INCREMENT ,       
       	c_no int(8) ,     	      	
@@ -475,6 +517,7 @@
       	imgurl varchar(200), 
       	sort int(8) default 0 ,
       	mark char(1),
+      	mark2 char(1),
       	status char(1) not null default 'Y',
       	reg_date datetime        
 				);";         
@@ -491,9 +534,11 @@
       	reg_date datetime
 				) ; " ; 				
 
-				
-				
+			
+
 				$wpdb->query($ht_sql);
+
+
 
 				$ht_query_arr = array(
 
