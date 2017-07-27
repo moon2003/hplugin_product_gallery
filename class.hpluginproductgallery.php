@@ -62,7 +62,25 @@
         	$text = str_replace("[HPLUGIN-PRODUCT-GALLERY=".$v_rid.$cat_str."]",$contents_str, $text) ;
  
 
-		}		
+		} else { 
+
+
+			switch( $v_step){
+
+            	case 'save':                         
+                	//require('hpluginebookProc.php');
+                	//break;
+            	default :            		
+           			require('hpluginproductgallerybase.php');           		
+                	break;
+
+        	}
+
+        	$text = str_replace("[HPLUGIN-PRODUCT-GALLERY]",$contents_str, $text) ;
+
+
+		}
+
 
         return $text;
 	}

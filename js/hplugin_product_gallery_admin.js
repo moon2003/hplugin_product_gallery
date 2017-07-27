@@ -473,10 +473,10 @@
 		var randomstr = key_randomString();
 
 		var add_field_str = "<div style=\"clear:both;margin-bottom:10px;\" id=\"img_field_"+randomstr+"_id\">";
-        add_field_str += "<div style=\"float:left;min-width:250px;min-height:100px;\"><img src=\""+pluginurl+"images/hplugin_product_gallery_noimage.png\" id=\"upload_img_00_id\" style=\"width:240px; border:1px solid #e7e7e7\" ></div>";
-        add_field_str += "<div style=\"float:left;\"><input type=\"file\" name=\"upload_img[]\"> <span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_imgadd_del('"+randomstr+"');\">X</span></div> ";
+        add_field_str += "<div style=\"float:left;min-width:250px;min-height:100px;\"><img src=\""+pluginurl+"images/hplugin_product_gallery_noimage.png\" id=\"upload_img_"+randomstr+"_id\" style=\"width:240px; border:1px solid #e7e7e7\" ></div>";
+        add_field_str += "<div style=\"float:left;\"><input type=\"file\" name=\"upload_img[]\" onChange=\"javascript:hplugin_product_gallery_image_select( this, 'upload_img_"+randomstr+"_id' );\"> ";
+        add_field_str += "<span class=\"label label-danger\" onclick=\"javascript:hplugin_product_gallery_imgadd_del('"+randomstr+"');\">X</span></div> ";
         add_field_str += "</div>";
-
 
 
 
@@ -729,7 +729,7 @@
 	}
 
 
-	function hplugin_product_gallery_opt_sortUpdate(){
+	function hplugin_product_gallery_showcase_sortUpdate(){
 
 
 		jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-showcase-menu&show=showcase-sort");		
@@ -768,6 +768,14 @@
 
 
 
+	function hplugin_product_gallery_image_select( fileinput,   eleID  ){
+
+		var pfiles= fileinput.files;
+		//alert( window.URL.createObjectURL(pfiles[0]) );
+		jQuery("#"+eleID).attr("src", window.URL.createObjectURL(pfiles[0]) );
+	
+	}
+	
 
 
 

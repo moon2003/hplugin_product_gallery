@@ -74,16 +74,16 @@
                 $a_opt_val_arr = explode("__##__", $opt_arr->value);
                 $optcnt = count($a_opt_val_arr);
 
-                $a_opt_str .="<select name=\"opt_".$a_loopcnt."\"\">";
+                $a_opt_str .="<select name=\"opt_".$a_loopcnt."\">";
                 for($pi=0; $pi < $optcnt ; $pi++){
-                    $a_opt_str .= "<optionvalue=\"".$a_opt_val_arr[$pi]."\"> ".$a_opt_val_arr[$pi]."</option>";    
+                    $a_opt_str .= "<option value=\"".$a_opt_val_arr[$pi]."\"> ".$a_opt_val_arr[$pi]."</option>";    
                 }                
                 $a_loopcnt++;  
-                break;
 
                 $a_opt_str .="</select>";
+                
+                break;
 
-            default : 
 
 
         }
@@ -173,7 +173,7 @@
                     
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
                         <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="width:240px;" ></div>
-                        <div style="float:left;"><input type="file" name="upload_img[]"></div>                        
+                        <div style="float:left;"><input type="file" name="upload_img[]" onChange="javascript:hplugin_product_gallery_image_select( this, 'upload_img_00_id' );"></div>                        
                     </div>
                     
                 </td>

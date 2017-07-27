@@ -247,7 +247,7 @@
        <!-- page nav -->
                 <!-- Room List -->
 
-            <div id="hplugin_product_gallery_showcase_sort_btn" class="btn btn-lg btn-primary" onclick="javascript:hplugin_product_gallery_opt_sortUpdate();" style="display:none;cursor:pointer;">순서적용하기</div>
+            <div id="hplugin_product_gallery_showcase_sort_btn" class="btn btn-lg btn-primary" onclick="javascript:hplugin_product_gallery_showcase_sortUpdate();" style="display:none;cursor:pointer;">순서적용하기</div>
 
             <input type="hidden" name="cpage" id="frm_cpage" value="<?php print $cpage;?>">
             <input type="hidden" name="cid" id="cid_id" value="">

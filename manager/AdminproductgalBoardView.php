@@ -147,20 +147,19 @@
                 }
 
 
-                $a_opt_str .="<select name=\"opt_".$a_loopcnt."\"\">";
+                $a_opt_str .="<select name=\"opt_".$a_loopcnt."\">";
                 for($pi=0; $pi < $optcnt ; $pi++){
 
                     $a_optset_checked = "";
                     if( in_array(  trim($a_opt_val_arr[$pi]) , $v_optsetval_arr ) ){ $a_optset_checked = "selected"; }
 
-                    $a_opt_str .= "<option value=\"".$a_opt_val_arr[$pi]."\" ".$a_optset_checked." >".$opt_val_arr[$pi]."</option>";    
-                }                
+                    $a_opt_str .= "<option value=\"".$a_opt_val_arr[$pi]."\" ".$a_optset_checked." >".$a_opt_val_arr[$pi]."</option>";    
+                }      
+                $a_opt_str .="</select>";          
                 $a_loopcnt++;  
                 break;
 
-                $a_opt_str .="</select>";
-
-            default : 
+            
 
 
         }
@@ -225,7 +224,7 @@
     }
 
     // Get Present image 
-    $sql_query = sprintf("SELECT no, imgurl FROM wp_hplugin_product_gallery_img WHERE status='Y' AND mark2='R' limit 1", $v_cid);
+    $sql_query = sprintf("SELECT no, imgurl FROM wp_hplugin_product_gallery_img WHERE c_no=%d AND status='Y' AND mark2='R' limit 1", $v_cid);
     $rimg_fd = $wpdb->get_results ($sql_query ) ;
 
     $a_repreimg_str = HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL."images/hplugin_product_gallery_noimage.png";
@@ -274,14 +273,14 @@
 
             <tr>
                 <td class="active">본문[HTML가능]</td>
-                <td><textarea id="contents_id" name="contents" style="width:700px;height:400px;"><?php echo $a_contents;?></textarea></td>
+                <td><textarea id="contents_id" name="contents" style="width:700px;height:400px;"><?php echo stripslashes($a_contents);?></textarea></td>
             </tr>            
 
 
 
             <tr>
                 <td class="active">본문2[HTML가능]</td>
-                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:200px;"><?php echo $a_contents2;?></textarea></td>
+                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:200px;"><?php echo stripslashes($a_contents2);?></textarea></td>
             </tr>            
 
 
@@ -319,13 +318,13 @@
                     <div style="clear:both;margin-bottom:10px;" id="img_thumb_id">                    
                         <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
                             <div class="alert alert-info">썸네일 이미지</div>
-                            <img src="<?php echo $a_thumbimg_str;?>" id="upload_img_00_id" border="1px" style="width:240px;" >
+                            <img src="<?php echo $a_thumbimg_str;?>" id="upload_img_tb_id" border="1px" style="width:240px;" >
                             <br>
                             <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'T' );">Clear</span>
                         </div>
                         <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
                             <div class="alert alert-info">View 대표 이미지</div>
-                            <img src="<?php echo $a_repreimg_str;?>" id="upload_img_00_id" border="1px" style="width:240px;" >
+                            <img src="<?php echo $a_repreimg_str;?>" id="upload_img_view_id" border="1px" style="width:240px;" >
                             <br>
                             <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'R' );">Clear</span>
                         </div>                        
@@ -351,7 +350,7 @@
 
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
                         <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="width:240px;" ></div>
-                        <div style="float:left;"><input type="file" name="upload_img[]"></div>                        
+                        <div style="float:left;"><input type="file" name="upload_img[]"  onChange="javascript:hplugin_product_gallery_image_select( this, 'upload_img_00_id' );" ></div>                        
                     </div>
                     
                 </td>

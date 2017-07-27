@@ -108,7 +108,7 @@
 
                     echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname." ".$v_optval_arr." / ".$v_optarrcnt."<br>";   
                     
-                    if( $v_optarrcnt == 1) { 
+                    if( is_array($v_optval_arr)  ) { 
 
 
                         if( $v_optval_arr ){ 
@@ -364,7 +364,7 @@
                 $v_optname = $_POST["opt_info_".$pst];
 
 
-                echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname."<br>";  
+                //echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname."<br>";  
                 
                 if( $v_optname != "" ){
                     
@@ -372,9 +372,9 @@
                     $v_optarrcnt = count($v_optval_arr);
 
 
-                    //echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname." ".$v_optval_arr." / ".$v_optarrcnt."<br>";   
+                    echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname." |  ".$v_optval_arr." / ".$v_optarrcnt."<br>";   
                     
-                    if( $v_optarrcnt == 1) { 
+                    if( !is_array($v_optval_arr) ) { 
 
 
                         if( $v_optval_arr ){ 
