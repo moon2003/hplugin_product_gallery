@@ -3,12 +3,244 @@
 
 	global $wpdb; 
 
-	//if ( $a_admin_chk == "Y" ){
-		$v_cpage = $_GET["cpage"];
-	//}
+	$v_cpage = $_GET["cpage"];
 	
+	// 검색어 
+	$v_skey = $_GET["skey"]	;
+	$v_stype = $_GET["stype"];
+
+
+
+
+	// 옵션사항 필드 
+	$v_opt_str = base64_decode($_GET["optval"]); 
+
+
+	$v_opt_arr = explode("_#_", $v_opt_str);
+
+	$a_opt_cnt = count($v_opt_arr);
+
+	$a_opt_name = array();
+	$a_opt_val = array();
 	
 
+
+	
+
+	$a_optstr_cnt = 0 ; 
+
+	// 옵션검색 
+	$a_option_str_init = "";
+	$a_option_search_str = "";
+	$a_option_search_table = "";
+	$a_option_str = "";
+
+	$a_prev_no = 0 ; 
+	$a_same_field_cnt = 0 ; 
+	
+	$a_option_str_tmp = "";
+
+	for($opi = 0 ;$opi < ($a_opt_cnt - 1) ; $opi++){
+
+		
+
+		$a_opt_field_arr = explode("^^", $v_opt_arr[$opi]);
+
+		$a_opt_name[$opi] = $a_opt_field_arr[0];
+		$a_opt_val[$opi] = base64_decode($a_opt_field_arr[1]) ;
+
+		//$a_option_str .= " ( name='".$a_opt_name[$opi]."' AND  value='".mb_convert_encoding ($a_opt_val[$opi],'UTF-8' ,'auto') ."') ";		
+
+		if ( !!$a_opt_name[$opi] && !!$a_opt_val[$opi] ){ 
+
+
+			if( $a_optstr_cnt == 0 ){ 
+				$a_option_str_init .= " AND b.c_no = a.no AND ( ";
+			} else {
+
+				if ( $a_prev_no == $a_opt_name[$opi]) { 
+						$a_option_str_tmp .= " OR " ;    // [옵션이 AND 인지 OR 인지 추후 문의후 변경함 ] //
+				} 
+				// 같은 필드명 일때는  or 로 묶음 
+				// 다른 필드명 일때는  and 로 처리 
+			}
+			
+
+
+			// 검색 필드가 바뀔때 적용 
+			//echo $a_prev_no ." / ". $a_opt_name[$opi] ."<br>";
+			//echo $a_same_field_cnt ." : ".$a_option_str_tmp."<Br>";
+
+			if( $a_prev_no != $a_opt_name[$opi] && $a_prev_no > 0   ) { 
+
+				if( $a_same_field_cnt == 0 ){
+					$a_option_str .= "( ".$a_option_str_tmp." )";
+
+					//if( $opi < ($a_opt_cnt -1 ) ) {					
+						$a_option_str_tmp = "";							
+					//}
+
+				} else  {
+					$a_option_str .= " AND ( ".$a_option_str_tmp." )";
+					$a_option_str_tmp = "";
+				}
+				
+				$a_same_field_cnt++ ; 			  
+			} 
+
+			$a_option_str_tmp .= " ( b.name='".$a_opt_name[$opi]."' AND  b.value='".$a_opt_val[$opi]."') ";	
+			$a_optstr_cnt++ ; 	
+
+			$a_prev_no = (int)$a_opt_name[$opi] ; 
+
+		}
+
+	}
+
+	//echo $a_same_field_cnt ." ###  ".$a_prev_no ."<br><Br>";
+
+	if( $a_same_field_cnt == 0  && $a_prev_no > 0  )  {
+		$a_option_str .= " ( ".$a_option_str_tmp." )";
+	} else if( $a_same_field_cnt > 0) {
+		$a_option_str .= " AND  ( ".$a_option_str_tmp." )";
+	}
+
+
+	if( $a_optstr_cnt > 0 ){
+		
+		$a_option_str .= " ) ";
+
+		$a_option_search_table = ", wp_hplugin_product_gallery_opt b ";	
+		$a_option_str = $a_option_str_init . $a_option_str ; 
+
+	}
+
+	//echo 	"<br>".$a_option_str ."<br/><br>";  
+	
+
+
+   	
+   	$sql_query = "SELECT no, name, value, type, iconurl, sort, status FROM wp_hplugin_product_gallery_opt_set WHERE status='Y' and sgubun='Y' and type in ('R','C','S') ORDER by SORT asc";
+    $opt_fd = $wpdb->get_results ($sql_query ) ;   
+
+    $a_loop_search_cnt = 0; 
+
+    $a_opt_search_nama_arr = array();
+    $a_opt_search_val_arr = array();
+
+    foreach ( $opt_fd as $opt_arr){
+
+
+
+    	if ( $a_loop_search_cnt == 0  ){ 
+    		$a_option_search_str .= "<div class=\"hplugin_product_gallery_optsearch_layer\">";
+
+
+
+    	} 
+
+        $a_option_search_str .= "	
+        <div class=\"hplugin_product_gallery_optsearch_row\">
+            <div class=\"hplugin_product_gallery_optsearch_col1\">
+            	<span class=\"hplugin_product_gallery_optsearch_name\">".$opt_arr->name."</span>
+            	<input type=\"hidden\" name=\"opt_info_".$a_loopcnt."\" value=\"".$opt_arr->no."\">
+            </div>
+            <div class=\"hplugin_priduct_gallery_optsearch_col2\">";
+
+        
+
+
+        $a_opt_val_arr = explode("__##__", $opt_arr->value);
+        $optcnt = count($a_opt_val_arr);
+
+		for($pi=0; $pi < $optcnt ; $pi++){
+
+			$a_checked = "";
+
+			//echo "<br> opt ". $a_opt_val_arr[$pi]."<br>";
+
+			if( in_array($opt_arr->no, $a_opt_name) &&  in_array( $a_opt_val_arr[$pi] , $a_opt_val) ){
+				$a_checked = "checked";
+			}
+
+			$a_option_search_str .= "<input type=\"checkbox\" name=\"opt_".$a_loop_search_cnt."[]\" value=\"".$opt_arr->no."^^".base64_encode($a_opt_val_arr[$pi])."\" ".$a_checked." > ".$a_opt_val_arr[$pi]."&nbsp;";
+
+
+		}
+         
+
+        $a_option_search_str .= "</div></div>";
+                
+		$a_loop_search_cnt++;  
+
+
+
+        /**        
+        switch($opt_arr->type){
+
+            case "C" : 
+
+                $a_opt_val_arr = explode("__##__", $opt_arr->value);
+                $optcnt = count($a_opt_val_arr);
+
+                for($pi=0; $pi < $optcnt ; $pi++){
+
+                    $a_opt_str .= "<input type=\"checkbox\" name=\"opt_".$a_loopcnt."[]\" value=\"".$a_opt_val_arr[$pi]."\"> ".$a_opt_val_arr[$pi]."&nbsp;";    
+                }
+                
+                $a_loopcnt++;  
+                break;
+
+            case "R" : 
+
+                $a_opt_val_arr = explode("__##__", $opt_arr->value);
+                $optcnt = count($a_opt_val_arr);
+
+                for($pi=0; $pi < $optcnt ; $pi++){
+                    $a_opt_str .= "<input type=\"radio\" name=\"opt_".$a_loopcnt."\" value=\"".$a_opt_val_arr[$pi]."\"> ".$a_opt_val_arr[$pi]."&nbsp;";    
+                }
+                
+                $a_loopcnt++;  
+                break;
+
+            case "S" :
+
+                $a_opt_val_arr = explode("__##__", $opt_arr->value);
+                $optcnt = count($a_opt_val_arr);
+
+                $a_opt_str .="<select name=\"opt_".$a_loopcnt."\">";
+                for($pi=0; $pi < $optcnt ; $pi++){
+                    $a_opt_str .= "<option value=\"".$a_opt_val_arr[$pi]."\"> ".$a_opt_val_arr[$pi]."</option>";    
+                }                
+                $a_loopcnt++;  
+
+                $a_opt_str .="</select>";
+                
+                break;
+
+
+        }
+
+		**/
+
+                
+    }
+
+
+    if( $a_loop_search_cnt  > 0 ){
+    	 $a_option_search_str .= "
+    	 <div class=\"hplugin_product_gallery_optsearch_row\">
+    	 	<div class=\"hplugin_product_gallery_opt_search_btn\" onclick=\"javascript:hplugin_product_gallery_nav(1);\">조건검색</div>
+    	 </div>
+    	 </div>";
+    	 
+    }
+
+    $a_option_search_str .= "<input type=\"hidden\" id=\"optcnt_id\" name=\"optcnt\" value=\"".$a_loop_search_cnt."\">";
+
+
+
+	//echo $a_option_search_str ; 
 
 
 	if( $a_catecode ) { 
@@ -61,7 +293,7 @@
 
 
 	// search type selected
-	/** 
+	/**
 	$a_search_type_arr = array("","","","");
 	switch( $v_search_type ){
 		case 'T' :
@@ -80,6 +312,8 @@
 
 	}
 	**/
+
+
 	// Category Linmit 
 	$a_cate_query_str = "";
 	if ( !!$v_cat  ){
@@ -87,12 +321,21 @@
 		$a_cate_query_str = sprintf( " AND FIND_IN_SET( '%d' , a.catcode ) ", $v_cat);
 	}
 
-	$sql_query = sprintf("SELECT count(a.no) FROM wp_hplugin_product_gallery a WHERE a.status in ('Y','D')  %s   %s " ,			
+	$sql_query = sprintf("SELECT count(a.no) ncnt FROM wp_hplugin_product_gallery a %s WHERE a.status in ('Y','D')  %s   %s  %s " ,			
+			$a_option_search_table, 
 			$a_search_query,
-			$a_cate_query_str );  
+			$a_cate_query_str,
+			$a_option_str );  
+	
 
-  	$tot = $wpdb->get_var($sql_query);
-  
+  	$nd_fd = $wpdb->get_results($sql_query) or die( "<br><br>ERR : 1 ");
+  	
+  	$tot = 0 ; 
+  	foreach ($nd_fd as $ndata){
+  		$tot = $ndata->ncnt;
+  	}
+  	
+  	//echo "tot : ".$tot; 
 
 
 	$max_rows = $a_listrow_no; 
@@ -153,18 +396,24 @@
 				$max_rows) ;
 	**/
 
-	$sql_query = "SELECT no, title, subtitle, catecode, price, status  FROM wp_hplugin_product_gallery WHERE status='Y' ".$a_search_query." ".$a_cate_query_str." ORDER by no desc LIMIT ".$limit.", ".$max_rows;
+	$sql_query = "SELECT a.no no , a.title title, a.subtitle subtitle, a.catecode catecode, a.price price, a.status status
+	  FROM wp_hplugin_product_gallery a ".$a_option_search_table." WHERE a.status='Y' ".$a_search_query." ".$a_cate_query_str." ".$a_option_str." ORDER by a.no desc LIMIT ".$limit.", ".$max_rows;
 
 
-	//print $sql_query ; 
+	//echo $sql_query ; 	
   							 
-	$data_fd = $wpdb->get_results ($sql_query ) ;	
+	$data_fd = $wpdb->get_results($sql_query ) ;
 	
 
 	$Cnt = 0 ;	
 	$body_str = "";
 
 	// Data fetch
+
+
+	$a_etype = "B";
+
+
 	foreach ( $data_fd as $data_arr ) { 
 
 
@@ -182,55 +431,6 @@
 				$a_btype_name ="타입A";
 				break;
 				
-		}
-
-
-		$a_etype = "B";
-
-
-
-
-		$a_bno = $data_arr->no;
-		
-
-		//-- Current protocol --//
-
-		$a_cur_protocol = "http:";
-
-		//$a_view_url = $a_cur_protocol.$a_boardViewURL."&pid=".$a_bno."&cpage=".$cpage;]
-
-		$a_search_str ="";
-		if ( !!$v_search_type && !!$v_search_key ){
-
-			$a_search_str = sprintf("&stype=%s&skey=%s",$v_search_type, $v_search_key );
-		}
-
-		$a_boardViewParam_add = sprintf( "%s&pid=%d&cpage=%d%s",  $a_boardViewParam , (int)$a_bno, (int)$cpage, $a_search_str );
-		
-		if ($a_admin_chk != "Y") {		
-			$a_boardViewParam_add =  encrypt_param($a_boardViewParam_add , $hto_blue_salt);
-		}
-
-		$a_view_url = sprintf( "%s%shtobbsparam=%s", $a_cur_protocol , $a_boardViewURL, $a_boardViewParam_add);
-
-
-		// 관리자일때만 View 보기 
-		$a_view_url_front = "";
-		$a_view_url_end = "";
-
-		if ( $a_admin_chk == "Y"){
-			$a_view_url_front = "<a href=\"".$a_view_url."\">";
-			$a_view_url_end = "</a>";
-		}
-
-		
-		$a_cnt = $data_arr->cnt ; 
-		$a_poststatus = $data_arr->status;
-		
-
-		$a_delete_checkbox ="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		if  ($a_admin_chk == "Y" && ( $a_poststatus == "Y" || $a_boardDel_type == "E" ) ){
-			$a_delete_checkbox = "<input type=\"checkbox\" name=\"pid_no[]\" value=\"".$data_arr->no."\"> ";
 		}
 
 
@@ -308,7 +508,6 @@
   		$a_max_weight = "";
 
   		$a_manufactor_logo = "";
-
 
 
 
@@ -467,17 +666,6 @@
 
 
 
-
-				if ( $a_admin_chk == "Y" ) {		// 관리자일때 삭제용 checkbox 
-					$a_admincheckbox_str = $a_delete_checkbox."삭제 ";
-				}
-
-
-
-
-
-
-
 				$body_str .="
 
 
@@ -510,8 +698,6 @@
 
 				";
 
-
-
 				break;
 
 	
@@ -522,14 +708,16 @@
 	}
 	
 
+
+
     // 결과값이 없을때 
     if( $tot == 0 ) {
 
 
         $body_str = "
-                <li class=\"hto_product_item\">
+                <div class=\"hplugin_product_gallery_no_list\">
                     등록된 게시물이 없습니다.
-                </li>
+                </div>
 		";
 
         
@@ -564,7 +752,8 @@
 
 		//$page_nav_str .=  "<li><a href='".$a_boardListURL.$a_boardListParam."&cpage".( ($sP-$max_page)-1 ) ."&stype=".$stype."&svalue=".$svalue."' class=dir>&laquo</a></li>";
 		//$page_nav_str .=  "<li class=\"hplugin_ebook_pagenav_prev\"><a href='".$a_boardListURL.$a_boardListParam_str."#hplugin_ebook_outlayer_id' class=dir>&laquo</a></li>";
-		$page_nav_str .=  "<a class=\"pre\" href=\"".$a_boardListURL.$a_boardListParam_str."#htobbs_outlayer_id\"><img width=\"56\" height=\"27\" alt=\"이전\" src=\"http://static.naver.com/common/paginate/btn_page_prev.gif\"></a> ";
+		//$page_nav_str .=  "<a class=\"pre\" href=\"".$a_boardListURL.$a_boardListParam_str."#htobbs_outlayer_id\"><img width=\"56\" height=\"27\" alt=\"이전\" src=\"http://static.naver.com/common/paginate/btn_page_prev.gif\"></a> ";
+		$page_nav_str .=  "<a class=\"pre\" href=\"#\" onclick=\"javascript:hplugin_product_gallery_nav('".(($sP-$max_page)-1)."');\"><img width=\"56\" height=\"27\" alt=\"이전\" src=\"http://static.naver.com/common/paginate/btn_page_prev.gif\"></a> ";
 
 	} 
 	
@@ -583,7 +772,8 @@
 		} else {
 			//$page_nav_str .= "<li><a href='".$a_boardListURL.$a_boardListParam."&cpage=".$sP."&stype=".$stype."&svalue=".$svalue."' class=dir>".$sP."</a></li>";
 			//$page_nav_str .= "<li class=\"hplugin_ebook_pagenav_num\"><a href='".$a_boardListURL.$a_boardListParam_str."#hplugin_ebook_outlayer_id' class=dir>".$sP."</a></li>";
-			$page_nav_str .="<a href=\"".$a_boardListURL.$a_boardListParam_str."#htobbs_outlayer_id\"><span>".$sP."</span></a>";			
+			//$page_nav_str .="<a href=\"".$a_boardListURL.$a_boardListParam_str."#htobbs_outlayer_id\"><span>".$sP."</span></a>";			
+			$page_nav_str .="<a href=\"#\" onclick=\"javascript:hplugin_product_gallery_nav('".$sP."');\"><span>".$sP."</span></a>";			
 
 		}
 	}
@@ -594,7 +784,8 @@
 
 		//$page_nav_str .= "<li ><a href='".$a_boardListURL.$a_boardListParam_str."&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."' class=dir>&raquo</a></li>";
 		//$page_nav_str .= "<li class=\"hplugin_ebook_pagenav_next_active\"><a href='".$a_boardListURL.$a_boardListParam_str."&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."#hplugin_ebook_outlayer_id' class=dir>&raquo</a></li>";
-		$page_nav_str .= "<a class=\"next\" href=\"".$a_boardListURL.$a_boardListParam_str."&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."#htobbs_outlayer_id\"><img width=\"57\" height=\"27\" alt=\"다음\" src=\"http://static.naver.com/common/paginate/btn_page_next.gif\"></a>";
+		//$page_nav_str .= "<a class=\"next\" href=\"".$a_boardListURL.$a_boardListParam_str."&cpage=".$sP."&stype=".$stype."&svalue=". $svalue."#htobbs_outlayer_id\"><img width=\"57\" height=\"27\" alt=\"다음\" src=\"http://static.naver.com/common/paginate/btn_page_next.gif\"></a>";
+		$page_nav_str .= "<a class=\"next\" href=\"#\" onclick=\"javascript:hplugin_product_gallery_nav('".($sP+1)."');\"><img width=\"57\" height=\"27\" alt=\"다음\" src=\"http://static.naver.com/common/paginate/btn_page_next.gif\"></a>";
 
 	} else {
 		$a_boardListParam_str = $a_boardListParam."&cpage=".$sP.$a_search_str;
@@ -716,18 +907,22 @@
 
 
 
+
+
 			// Return Page 
 			$hplugin_product_gallery_list_str = "
 
 
-
-
-
 <div class=\"hto_content_box\">
     <h2 class=\"hto_content_title\">칼러장비</h2>
+    <form name=\"hpgfrm\" id=\"hpgfrm_id\" method=\"get\"  >
     <div class=\"hto_content\">
         <div class=\"hto_product\">
             <ul class=\"hto_product_list\">
+
+            	<!-- Option search layer -->
+            	".$a_option_search_str."
+            	<!-- Option search layer -->
                 <p>
                     <!--// Loop -->
                 </p>
@@ -771,63 +966,10 @@
         </div>
         </p>
     </div>
+    <input type=\"hidden\" name=\"pageurl\" value=\"".get_permalink()."\" id=\"pageurl_id\" >
+    </form>
 </div>
 	";
-
-
-
-$ssss = "
-<div id=\"hplugin_ebook_outlayer_id\">						
-	<div class=\"hplugin_ebook_layer\">
-	<form name=\"htobbs_frm\" id=\"htobbs_frm\" method=\"post\">
-
-		<div class=\"hplugin_ebeook_body_layer\">".$body_str."</div>
-
-
-		<div class=\"hplugin_ebook_split_line\"></div>
-		<div class=\"hplugin_ebook_split_line_spacer\"></div>
-
-		<!-- Page nav -->
-		<div>
-		<div id=\"hplugin_ebook_page_nav_pre\"></div>
-		<div id=\"hplugin_ebook_page_nav\">
-			<ul class=\"pagination\" >
-			<li class=\"hplugin_ebook_pagenav_info\">".$page_info_for_gal."</li>		
-			".$page_nav_str."
-			</ul>
-		</div>
-		</div>
-		<!-- Page nav -->
-
-		<div style=\"clear:both\" id=\"hplugin_ebook_page_splitbtn\"></div>
-		<!-- Search nav -->
-		<div class=\"row\" id=\"search_layer_id\">
-			<div class=\"col-md-8\">
-			".$a_search_btn."
-			</div>
-
-			".$board_btn_str."
-
-		</div>	
-		<!-- Search nav -->
-	<input type=\"hidden\" name=\"rid\" value=\"".$v_rid."\">
-	<input type=\"hidden\" name=\"pmode\" id=\"pmode_id\" value=\"\">
-
-	</form>
-	</div>
-</div>	
-
-<!--[if gt IE 9]>
-<script>
-	jQuery('selectpicker').selectpicker({
-		style : 'btn-info',
-		size : 8
-
-	});
-</script>
-<![endif]-->
-				";
-
 
 
 			break;

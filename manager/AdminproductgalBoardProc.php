@@ -177,6 +177,8 @@
 
             foreach( $_FILES["upload_img"]['tmp_name'] as $key=>$tmpname   ){
 
+                $a_mark1 = "";  // 썸네일 지정 
+                $a_mark2 = "";  // 뷰메일 지정 
 
 
                 if( $_FILES["upload_img"]["size"][$key]  > 0 ){
@@ -192,6 +194,10 @@
                         if( !is_dir($file_upload_path)){
                             mkdir($file_upload_path, 0755, true) ;
                         }
+
+                        // 첫번째 이미지일일때는 설정 
+                        $a_mark1 = "T";  
+                        $a_mark2 = "R" ;
                     }
     
 
@@ -221,13 +227,16 @@
 
 
                     // DB insert 
+
+
                     $wpdb->insert('wp_hplugin_product_gallery_img',
                                 array(  
                                 'c_no' => $max_num_plus ,                        
                                 'title' => '' ,
                                 'imgurl' => $save_path .'/'.$a_uniqfilename  ,                                                                 
                                 'sort' => $imgloopcnt ,
-                                'mark' => '',
+                                'mark' => $a_mark1,
+                                'mark2' => $a_mark2,
                                 'status' => 'Y',
                                 'reg_date' => current_time('mysql', 1) 
                             ),
@@ -236,6 +245,7 @@
                             '%s',                    
                             '%s',
                             '%d',
+                            '%s',
                             '%s',
                             '%s',
                             '%s'

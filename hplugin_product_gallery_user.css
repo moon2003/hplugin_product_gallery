@@ -1,0 +1,11 @@
+
+.hplugin_product_gallery_optsearch_layer{ display:block; width: 90%; clear:both; padding: 10px 20px 10px 20px; border: 1px solid #e7e7e7; margin-bottom: 40px;}
+	.hplugin_product_gallery_optsearch_row{ clear:both;  }
+		.hplugin_product_gallery_optsearch_col1{ float:left; width:10%;min-width:50px; }
+			.hplugin_product_gallery_optsearch_name{ padding:3px; font-weight: 600  }
+		.hplugin_product_gallery_optsearch_col2{ float:left; min-width:200px; width:70%; }
+		.hplugin_product_gallery_opt_search_btn{ clear:both; width:96%; color:#FFFFFF; margin:10px auto 10px auto; padding:5px; text-align: center; cursor: pointer; background-color: #A9D0F5 }
+
+
+
+.hplugin_product_gallery_no_list{ clear:both; width:90%; height:100px; text-align: center; padding: 15px; border:1px solid #e8e8e8; }
