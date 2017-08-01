@@ -32,6 +32,7 @@
             <th ><strong>옵션타입</strong></th>             
             <th ><strong>옵션값</strong></th>
             <th ><strong>순서&nbsp;<span id="hplugin_product_gallery_sort_status" style="display:none" class="label label-danger">순서변경됨<span></strong></th>
+            <th ><strong>검색적용</strong></th>
             <th ><strong>사용여부</strong></th>
             <th ><strong>기능</strong></th>
          </thead>       
@@ -98,7 +99,7 @@
 
     $limit = ($cpage-1)*$max_rows;
   
-    $sql_query = sprintf("SELECT no, name, value, iconurl, type, sort, status, reg_date FROM wp_hplugin_product_gallery_opt_set  WHERE status in ('Y','N') ORDER BY sort asc, no desc  LIMIT %d, %d ",
+    $sql_query = sprintf("SELECT no, name, value, iconurl, type, sort, status, reg_date, sgubun FROM wp_hplugin_product_gallery_opt_set  WHERE status in ('Y','N') ORDER BY sort asc, no desc  LIMIT %d, %d ",
                 $limit,
                 $max_rows) ;
                              
@@ -162,6 +163,14 @@
             $v_class_status = "style=\"background-color:#FAAC58\"";
         }
 
+
+        $a_search_apply = "<span style=\"color:orange\">미적용</span>";
+
+        if( $data_arr->sgubun == "Y" && $data_arr->type != "I" ){ 
+            $a_search_apply = "<span style=\"color:blue\" >적용</span>";
+        } 
+
+
         print "
 
         <tr class=\"active\" id=\"optionval_".$Cnt."\" >
@@ -172,6 +181,7 @@
             <td $v_class_status><i class=\"glyphicon glyphicon-arrow-up\" style=\"cursor:pointer;color:red\" onclick=\"javascript:hplugin_product_gallery_opt_sort('U',".$Cnt.");\"></i> 
                 <i class=\"glyphicon glyphicon-arrow-down\" style=\"cursor:pointer;color:blue\" onclick=\"javascript:hplugin_product_gallery_opt_sort('D',".$Cnt.");\" /></i>
                 </td>
+            <td $v_class_status>".$a_search_apply."</td> 
             <td $v_class_status>".$v_status_str."</td>    
             <td $v_class_status>
                 <button type=\"button\" class=\"btn btn-xs btn-danger\" onclick=\"javascript:hplugin_product_gallery_optionDelete(".$data_arr->no.")\">삭제</button>
@@ -189,7 +199,7 @@
 
         print "
         <tr class=\"warning\">
-            <td colspan=\"6\"><center>생성된 옵션이 없습니다.</center></td>
+            <td colspan=\"7\"><center>생성된 옵션이 없습니다.</center></td>
         </tr>";        
         
     } 

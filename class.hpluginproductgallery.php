@@ -505,7 +505,8 @@
       	value varchar(200),             	
       	type char(1) not null default 'I',			
       	iconurl varchar(50),
-      	sort int default 0 , 
+      	sgubun char(1) default 'N', 
+      	sort int default 0 ,       	
       	status char(1) not null default 'Y',
       	reg_date datetime 
 				);";         

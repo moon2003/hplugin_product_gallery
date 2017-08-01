@@ -18,7 +18,7 @@
 
             $v_option_name = $_POST["opt_name"];
             $v_option_type = $_POST["opt_type"];
-            $v_option_ness = $_POST["nessesary"];
+            $v_option_sgubun = $_POST["sgubun"];
 
 
 
@@ -71,7 +71,8 @@
                         'name' => $v_option_name,
                         'value' => $v_option_value_str,
                         'type' => $v_option_type,
-                        'sort' => $max_num_plus,                        
+                        'sort' => $max_num_plus,     
+                        'sgubun' => $v_option_sgubun,                   
                         'status' => 'Y',
                         'reg_date' => current_time('mysql', 1) 
                 ),
@@ -79,6 +80,7 @@
                     '%s',
                     '%s',
                     '%s',
+                    '%d',
                     '%d',
                     '%s',
                     '%s'
@@ -111,7 +113,7 @@
 
             $v_option_name = $_POST["opt_name"];
             $v_option_type = $_POST["opt_type"];
-            $v_option_ness = $_POST["nessesary"];
+            $v_option_sgubun = $_POST["sgubun"];
             $v_option_status = $_POST["usage"];
 
 
@@ -155,13 +157,15 @@
                 array( 
                     'name' => $v_option_name,
                     'value' => $v_option_value_str,
-                    'type' => $v_option_type,                
+                    'type' => $v_option_type,   
+                    'sgubun'=> $v_option_sgubun,             
                     'status' => $v_option_status                                                
                 ),
                 array(
                     'no'=>$v_cid
                 ),
                 array(
+                    '%s',
                     '%s',
                     '%s',
                     '%s',

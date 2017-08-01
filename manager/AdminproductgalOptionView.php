@@ -7,7 +7,7 @@
 
     $v_cid = $_GET["cid"];
 
-    $sql_query = sprintf("SELECT no, name, value, iconurl, type, sort, status  FROM wp_hplugin_product_gallery_opt_set WHERE no=%d",
+    $sql_query = sprintf("SELECT no, name, value, iconurl, type, sort, status , sgubun   FROM wp_hplugin_product_gallery_opt_set WHERE no=%d",
                     (int)$v_cid);
 
     $op_fd = $wpdb->get_results($sql_query);
@@ -22,6 +22,7 @@
         $a_optype = $op_arr->type;
         $a_opsort = $op_arr->sort;
         $a_status = $op_arr->status;
+        $a_sgubun = $op_arr->sgubun;
     }
 
 
@@ -84,6 +85,22 @@
             break;
     }
     
+
+    $a_sgubun_arr = array("", "");
+    switch( $a_sgubun){
+        case "Y" : 
+            $a_sgubun_arr[0]="checked";
+            break; 
+        case "N" :
+            $a_sgubun_arr[1]="checked";
+            break; 
+        default :
+            $a_sgubun_arr[0]="checked";
+            break; 
+    }
+
+
+
 ?>
 <script src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>js/hplugin_product_gallery_admin.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -97,7 +114,8 @@
     <div class="hplugin_admin_local_menu">
         <ul class="nav nav-tabs" role="tablist">
             <li ><a href="/wp-admin/admin.php?page=hplugin-product-gallery-option-menu">옵션목록</a></li>
-            <li class="active"><a href="/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-input">신규옵션생성</a></li>           
+            <li ><a href="/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-input">신규옵션생성</a></li>           
+            <li class="active"><a>옵션수정</a></li>           
         </ul>       
     </div>
                 
@@ -133,10 +151,11 @@
 
           
             <tr>
-                <td class="active">필수구분</td>
+                <td class="active">검색적용</td>
                 <td>
-                    <input type="radio" name="nessesary" value="Y" checked > <span class="label label-primary">필수필드</span>
-                    <input type="radio" name="nessesary" value="N"> <span class="label label-success">비필필드</span>
+                    <input type="radio" name="sgubun" value="Y" <?php echo $a_sgubun_arr[0];?> > <span class="label label-primary">검석필드적용</span>
+                    <input type="radio" name="sgubun" value="N" <?php echo $a_sgubun_arr[1];?> > <span class="label label-warning">미적용</span>
+                    <span style="color:red;font-size: 11px;">※ INPUT 옵션은 검색이 적용되지 않습니다. </span>
                 </td>
             </tr>          
 
@@ -159,7 +178,7 @@
 
 
     <div class="ht_room_admin_local_menu">        
-    <span class="label label-primary htobbs_btn" onclick="javascript:hplugin_product_gallery_optionSave();" >업데이트</span>
+    <span class="label label-primary htobbs_btn" style="cursor:pointer; padding:5px;" onclick="javascript:hplugin_product_gallery_optionSave();" >업데이트</span>
     </div>
     
     <div class="both_clear" style="height:30px;"></div>

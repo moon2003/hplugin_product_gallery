@@ -53,10 +53,11 @@
             </tr>                       
 
             <tr>
-                <td class="active">필수구분</td>
+                <td class="active">검색적용</td>
                 <td>
-                    <input type="radio" name="nessesary" value="Y" checked > <span class="label label-primary">필수필드</span>
-                    <input type="radio" name="nessesary" value="N"> <span class="label label-success">비필필드</span>
+                    <input type="radio" name="sgubun" value="Y"  > <span class="label label-primary">검석필드적용</span>
+                    <input type="radio" name="sgubun" value="N" checked  > <span class="label label-warning">미적용</span>
+                    <span style="color:red;font-size: 11px;">※ INPUT 옵션은 검색이 적용되지 않습니다. </span>
                 </td>
             </tr>                       
 
@@ -66,7 +67,7 @@
     </form>    
 
     <div class="ht_room_admin_local_menu">    
-    <span class="label label-primary htobbs_btn" onclick="javascript:hplugin_product_gallery_optionSave();" >옵션 생성</span>
+    <span class="label label-primary htobbs_btn" style="cursor:pointer; padding:5px;" onclick="javascript:hplugin_product_gallery_optionSave();" >옵션생성</span>
     </div>
     
     <div class="both_clear" style="height:30px;"></div>
