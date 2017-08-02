@@ -10,8 +10,6 @@
 	$v_stype = $_GET["stype"];
 
 
-
-
 	// 옵션사항 필드 
 	$v_opt_str = base64_decode($_GET["optval"]); 
 
@@ -25,7 +23,8 @@
 	
 
 
-	
+
+
 
 	$a_optstr_cnt = 0 ; 
 
@@ -268,24 +267,24 @@
 
 
 
- 	$a_boardWriteURL = $a_boardListURL; 
- 	$a_boardWriteParam = sprintf( "mode=write&rid=%d" , (int)$v_rid );
- 	$a_boardWriteParam_add =	encrypt_param( $a_boardWriteParam , $hto_blue_salt);
+ 	//$a_boardWriteURL = $a_boardListURL; 
+ 	//$a_boardWriteParam = sprintf( "mode=write&rid=%d" , (int)$v_rid );
+ 	//$a_boardWriteParam_add =	encrypt_param( $a_boardWriteParam , $hto_blue_salt);
 
- 	$write_str = sprintf( "PostWrite('%s%shtobbsparam=%s');", $a_cur_protocol , $a_boardWriteURL, $a_boardWriteParam_add);
+ 	//$write_str = sprintf( "PostWrite('%s%shtobbsparam=%s');", $a_cur_protocol , $a_boardWriteURL, $a_boardWriteParam_add);
 
  	//$write_str = "PostWrite('1');";
 	//$write_str = "PostWrite('".encrypt_param("rid=".$v_rid , $hto_blue_salt)."');";
-	$delete_str = "PostAllDelete();";
+	//$delete_str = "PostAllDelete();";
 
-	$a_post_all_select_str ="";
+	//$a_post_all_select_str ="";
 
-	if ( $a_admin_chk == "Y") {
-		$write_str = "hplugin_ebook_adminPostdWrite(".$v_rid.");";
-		$delete_str ="hplugin_ebook_adminPostAllDelete();";
+	//if ( $a_admin_chk == "Y") {
+	//	$write_str = "hplugin_ebook_adminPostdWrite(".$v_rid.");";
+	//	$delete_str ="hplugin_ebook_adminPostAllDelete();";
 
-		$a_post_all_select_str = "<input type=\"checkbox\" name=\"postall\" id=\"postall_id\" onclick=\"javascript:postAllSelect();\">";
-	} 
+	//	$a_post_all_select_str = "<input type=\"checkbox\" name=\"postall\" id=\"postall_id\" onclick=\"javascript:postAllSelect();\">";
+	//} 
 
 
 	// Create Search Query 
@@ -316,9 +315,9 @@
 
 	// Category Linmit 
 	$a_cate_query_str = "";
-	if ( !!$v_cat  ){
+	if ( !!$v_rid  ){
 
-		$a_cate_query_str = sprintf( " AND FIND_IN_SET( '%d' , a.catcode ) ", $v_cat);
+		$a_cate_query_str = sprintf( " AND FIND_IN_SET( '%d' , a.catecode ) ", (int)$v_rid);
 	}
 
 	$sql_query = sprintf("SELECT count(a.no) ncnt FROM wp_hplugin_product_gallery a %s WHERE a.status in ('Y','D')  %s   %s  %s " ,			
@@ -328,7 +327,9 @@
 			$a_option_str );  
 	
 
-  	$nd_fd = $wpdb->get_results($sql_query) or die( "<br><br>ERR : 1 ");
+	//echo $sql_query; 
+
+  	$nd_fd = $wpdb->get_results($sql_query) ; 
   	
   	$tot = 0 ; 
   	foreach ($nd_fd as $ndata){

@@ -134,16 +134,38 @@
 
 		$a_catename_str = "";
 
+		/**
 		if( !!$data_arr->catecode ){ 
-			$sql_query = "SELECT catename FROM wp_hplugin_product_gallery_cate WHERE no in ( ".$data_arr->catecode." )  ";
+			$sql_query = "SELECT no, catename FROM wp_hplugin_product_gallery_cate WHERE no in ( ".$data_arr->catecode." )  ";
 			$cate_fd = $wpdb->get_results($sql_query);
 			
 			foreach( $cate_fd as $cdata_arr ){
 
 				$a_catename_str .= "<span class=\"label label-success\">".$cdata_arr->catename."</span>&nbsp;";
+
 			}
 
         }
+		**/
+
+		$a_setcate_arr = explode(",",$data_arr->catecode);
+
+		$sql_query = "SELECT no, catename FROM wp_hplugin_product_gallery_cate  order by no asc ";
+		$cate_fd = $wpdb->get_results($sql_query);
+
+		$a_catloop = 0 ; 
+
+		foreach( $cate_fd as $cdata_arr){
+
+			$a_selcate_class ="hplugin_product_gallery_cate_no";
+
+			if( in_array( $cdata_arr->no , $a_setcate_arr) ) {
+				$a_selcate_class="hplugin_product_gallery_cate_".$a_catloop;
+			}
+
+			$a_catename_str .= "<span class=\"label label-default ".$a_selcate_class."\" >".$cdata_arr->catename."</span><br>";
+			$a_catloop++;
+		}
 
 
         // Get Image 

@@ -291,10 +291,11 @@
 		<div class="panel-heading"> 
 		<b>플러그인 사용법</b>
 		</div>
-		<div class-"panel-body" id="hplugin_plugin_useinfo_body">
+		<div class="panel-body hplugin_plugin_info" id="hplugin_plugin_useinfo_body">
 
   		 아래 문자와 같은 Shortcode를 복사하여 페이지/포스트에 넣으시면 사용하실수 있습니다. <br><br>
  		- 갤러리 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY]</b> <br> 
+ 		- 카테고리지정 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY=CATECODE]</b> <br> 
 		<br>
  		- User Design CSS file &nbsp;&nbsp;<b>[PLUGIN DIRECTORY]/hplugin_product_gallery_user.css </b>
  		<br>
