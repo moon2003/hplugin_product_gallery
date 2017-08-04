@@ -65,19 +65,16 @@
 		} else { 
 
 
-			switch( $v_step){
-
-            	case 'save':                         
-                	//require('hpluginebookProc.php');
-                	//break;
-            	default :            		
-           			require('hpluginproductgallerybase.php');           		
-                	break;
-
+        	// 메인진열대 or  기본게시판  연결
+        	$showcasetCnt = strpos($text, "[HPLUGIN-PRODUCT-GALLERY-SHOWCASE]") ;
+        	
+        	if( $showcasetCnt > 0 ){
+        		require('hpluginproductgalleryshowcase.php'); 
+				$text = str_replace("[HPLUGIN-PRODUCT-GALLERY-SHOWCASE]",$contents_str, $text) ;
+        	} else {
+           		require('hpluginproductgallerybase.php'); 
+        		$text = str_replace("[HPLUGIN-PRODUCT-GALLERY]",$contents_str, $text) ;
         	}
-
-        	$text = str_replace("[HPLUGIN-PRODUCT-GALLERY]",$contents_str, $text) ;
-
 
 		}
 
@@ -293,11 +290,13 @@
 		</div>
 		<div class="panel-body hplugin_plugin_info" id="hplugin_plugin_useinfo_body">
 
-  		 아래 문자와 같은 Shortcode를 복사하여 페이지/포스트에 넣으시면 사용하실수 있습니다. <br><br>
+  		 아래 문자와 같은 Shortcode를 복사하여 페이지, 포스트에 넣으시면 사용하실수 있습니다. <br><br>
  		- 갤러리 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY]</b> <br> 
- 		- 카테고리지정 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY=CATECODE]</b> <br> 
+ 		- 갤러리 카테고리지정 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY=CATECODE]</b> <br> 
+ 		- 메인진열대 연결 &nbsp;&nbsp;<b>[HPLUGIN-PRODUCT-GALLERY-SHOWCASE]</b> <br> 
 		<br>
- 		- User Design CSS file &nbsp;&nbsp;<b>[PLUGIN DIRECTORY]/hplugin_product_gallery_user.css </b>
+ 		- User Design CSS file &nbsp;&nbsp;<b>[PLUGIN DIRECTORY]/hplugin_product_gallery_user.css </b><br>
+ 		- Showcase Design file &nbsp;&nbsp;<b>[PLUGIN DIRECTORY]/hplugin_product_gallery_showcase.tpl </b>
  		<br>
  		</div>
 	</div>

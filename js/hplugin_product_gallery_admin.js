@@ -327,7 +327,7 @@
 
 	function hplugin_product_gallery_optionDelete(rnum){
 
-		conf = confirm("선택하신 옵션을 삭제하시겠습니까?\n\n기존 등록된 게시물의 옵션사항도 같이삭제되어지게 됩니다.");
+		conf = confirm("선택하신 옵션을 삭제하시겠습니까?\n\n기존 등록된 게시물의 옵션사항도 같이 삭제 됩니다.");
 
 		if ( conf === true) {
 			jQuery("#frm_in_id").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-delete");
@@ -439,10 +439,45 @@
 
 	function hplugin_product_gallery_opt_sortUpdate(){
 
+		errcnt = 0 ; 
+		errstr = '';
+		
+		errcnt2 = 0;
+		errstr2 = '';
+		
+	
+		if ( !jQuery("#opt_name_id").attr("value") ){
+			errcnt++;
+			errstr = "옵션명";
+		} else if ( fieldmaxlen(100, jQuery('#opt_name_id').attr('value') ) === false ) {
+	
+			errstr2 += "옵션명";
+			errcnt2++;
+	
+	 	} 	
+	
+	
+		if ( errcnt >0 || errcnt2 > 0) {
+	
+			emsg = '';
+	
+			if ( errcnt > 0 ){
+				emsg +='다음 사항이 입력되지 않았습니다.\n'+errstr+'\n\n';
+			}
+	
+	
+			if ( errcnt2 > 0 ) {
+				emsg +='다음 사항의  길이가  너무 깁니다.\n'+errstr2;
+			}
+	
+			alert(emsg);
 
-		jQuery("#frm_in").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-sortupdate");
-		//jQuery("#frm_in").submit();
-		document.frm_in.submit();
+		} else { 
+
+			jQuery("#frm_in").attr("action","/wp-admin/admin.php?page=hplugin-product-gallery-option-menu&show=option-sortupdate");
+			//jQuery("#frm_in").submit();
+			document.frm_in.submit();
+		}
 
 
 	}
@@ -496,12 +531,50 @@
 
 	function hplugin_product_gallery_boardSave(){
 
-
-		// Vaildataion 
 		
+		// Vaildataion 
+		errcnt = 0 ; 
+		errstr = '';
+		
+		errcnt2 = 0;
+		errstr2 = '';
+		
+	
+		if ( !jQuery("#title_id").attr("value") ){
+			errcnt++;
+			errstr = "제목";
+		} else if ( fieldmaxlen(200, jQuery('#title_id').attr('value') ) === false ) {
+			errstr2 += "제목";
+			errcnt2++;
+	 	} 	
+	
 
-		// Submit 
-		jQuery("#frm_in_id").submit();
+		if ( !jQuery("#title_id").attr("value") ){
+			errcnt++;
+			errstr = "제목";
+		} else if ( fieldmaxlen(200, jQuery('#title_id').attr('value') ) === false ) {
+			errstr2 += "제목";
+			errcnt2++;
+	 	} 	
+	
+
+
+		if ( errcnt >0 || errcnt2 > 0) {
+			emsg = '';
+			if ( errcnt > 0 ){
+				emsg +='다음 사항이 입력되지 않았습니다.\n'+errstr+'\n\n';
+			}
+	
+			if ( errcnt2 > 0 ) {
+				emsg +='다음 사항의  길이가  너무 깁니다.\n'+errstr2;
+			}
+	
+			alert(emsg);
+
+		} else { 
+			// Submit 
+			jQuery("#frm_in_id").submit();
+		}
 
 
 	}
