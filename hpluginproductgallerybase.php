@@ -32,7 +32,7 @@
 			break ;
 		case 'view' :
 			include(HPLUGIN_PRODUCT_GALLERY__PLUGIN_DIR."lib/pgallertView.php");
-			$contents_str = $hplugin_product_gallery_view_str; 
+			$contents_str = str_replace( "<p>","", str_replace("</p>","",  $hplugin_product_gallery_view_str ) ); 
 			break ;
 		default  : 
 			include(HPLUGIN_PRODUCT_GALLERY__PLUGIN_DIR."lib/pgallertList.php");

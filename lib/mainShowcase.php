@@ -2,6 +2,10 @@
 
 	global $wpdb; 
 
+
+    require_once("Mobile_Detect.php");
+    // check Mobile device
+    $detect_obj = new Mobile_Detect();
 	// GET Design Template file 
 	$tpl_html = file_get_contents( HPLUGIN_PRODUCT_GALLERY__PLUGIN_DIR."hplugin_product_gallery_showcase.tpl" );
 
@@ -69,9 +73,12 @@
 		$a_title 		=  $data_arr->title;
 		$a_price 		=  $data_arr->price;
 
+        $a_catecode     =  $data_arr->catecode ; 
+
 		$a_subtitle_str = "";
 		if ( $a_subtitle ){
-			$a_subtitle_str = "<div class=\"p_detail_1\">".$a_subtitle_str."</div>";
+			//$a_subtitle_str = "<div class=\"p_detail_1\">".$a_subtitle_str."</div>";
+            $a_subtitle_str = $a_subtitle;
 		}
 
 
@@ -83,7 +90,14 @@
 			$a_linkurl .= "?";
 		}
 
-		$a_linkurl .= "mode=view&cid=".$a_cno;
+
+        $a_link_page = "3325";
+        if( $a_catecode == 2){                
+            $a_link_page = "3327";
+        }
+
+
+		$a_linkurl .= "page_id=".$a_link_page."&mode=view&cid=".$a_cno;
 
 
 		//----- Get option value   [이부분으 바른렌탈에만 적용됨 ]
@@ -125,19 +139,19 @@
   				switch($a_optvalue){
 
   					case "OKI" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_oki.png\" height=17 id=\"slick_img_icon\">";
   						break;
   					case "후지 제록스" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_fuji_zerox.png\" height=17 id=\"slick_img_icon\">";
   						break;
   					case "신도리코" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_shidoh.png\" height=17 id=\"slick_img_icon\">";
   						break;	
   					case "코니카 미놀타" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17 id=\"slick_img_icon\">";
   						break;		
 					case "삼성전자" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_samsung.png\" height=17 id=\"slick_img_icon\">";
   						break;		  						
   				}
 
@@ -152,10 +166,10 @@
   				switch($a_optvalue){
 
   					case "A4" : 
-  						$a_paper_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a4.png\" height=35> ";
+  						$a_paper_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a4.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   					case "A3" : 
-  						$a_paper_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a3.png\" height=35> ";
+  						$a_paper_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a3.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   				}
 
@@ -166,10 +180,10 @@
   				switch($a_optvalue){
 
   					case "칼라" : 
-  						$a_color_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_01.png\" height=35> ";
+  						$a_color_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_01.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   					case "흑백" : 
-  						$a_color_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_02.png\" height=35> ";
+  						$a_color_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_02.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   				}
 
@@ -180,10 +194,10 @@
   				switch($a_optvalue){
 
   					case "와이파이" : 
-  						$a_network_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_wifi.png\" height=35> ";
+  						$a_network_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_wifi.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   					case "네트워크" : 
-  						$a_network_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_network.png\" height=35> ";
+  						$a_network_opt .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_network.png\" height=35 id=\"slick_img_icon\"> ";
   						break;
   				}
 
@@ -208,36 +222,43 @@
 
   		$a_option_icon_str = $a_color_opt.$a_paper_opt.$a_network_opt;
 
+         // if ( !$detect_obj->isMobile()  ){
 
-		$body_str .="
+		      $body_str_pc .="<div class=\"hgplugin_slide_col\">
+          <ul class=\"hto_product_list\" id=\"hto_product_list_slider_item_id\">
 
-    	<div>
-        	<ul class=\"hto_product_list\">
-                <li class=\"hto_product_item\">
-                    <a href=\"".$a_linkurl."\" class=\"p_item\"></p>
-                        <div class=\"p_image\"><img src=\"".$thumb_img_url."\" height=180></div>
-                        <div class=\"p_logo\">".$a_manufactor_logo."</div>
-                        <div class=\"p_name\">".$a_title."</div>
-                        <div class=\"p_icon\">
-                            <!--img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_01.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_02.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a4.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a3.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_wifi.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_network.png\" height=35-->
-                            ".$a_option_icon_str."
-                        </div>
-                        ".$a_subtitle_str."
-                        ".$a_print_speed."
-                        ".$a_max_weight."
-                        <div class=\"p_price\">월 ".number_format($a_price)."원</div>
-                        <p>
-                    </a>
-                </li>
+              <li class=\"hto_product_item\" id=\"hto_product_list_slider_item_id\">
+                <a href=\"".$a_linkurl."\">
+                    <div class=\"p_image\"><img src=\"".$thumb_img_url."\" height=\"180\" id=\"slick_img\" /></div>
+                    <div class=\"p_logo\">".$a_manufactor_logo."</div>
+                    <div class=\"p_name p_name_home\">".$a_title."</div>
+                    <div class=\"p_detail_1\">".$a_subtitle_str."</div>
+                    <div class=\"p_price p_price_home\">월 ".number_format($a_price)."원</div>
+                    <div class=\"p_icon\">".$a_option_icon_str."</div>
+                </a>
+              </li>
             </ul>
-        </div>
+        </div>";
 
-		";
+        //} else { 
+
+
+          if( $Cnt < 4 ){
+                $body_str_mobile .="
+            
+              <li class=\"hto_product_item\" >
+                <a href=\"".$a_linkurl."\">
+                    <div class=\"p_image\"><img src=\"".$thumb_img_url."\" height=\"180\" id=\"slick_img\" /></div>
+                    <div class=\"p_logo\">".$a_manufactor_logo."</div>
+                    <div class=\"p_name p_name_home\">".$a_title."</div>
+                    <div class=\"p_detail_1\">".$a_subtitle_str."</div>
+                    <div class=\"p_price p_price_home\">월 ".number_format($a_price)."원</div>
+                    <div class=\"p_icon\">".$a_option_icon_str."</div>
+                </a>
+              </li>
+            ";
+          }
+       // }
 
 
 
@@ -250,15 +271,20 @@
     // 결과값이 없을때 
     if( $Cnt == 0 ) {
 
-        $body_str = "
-                <div class=\"hplugin_product_gallery_no_list\">
+        $body_str = "<div class=\"hplugin_product_gallery_no_list\">
                     등록된 게시물이 없습니다.
-                </div>		";
+                </div>";
         
     } 
 
 
-    $hplugin_product_gallery_showcase_str = $body_str;
+
+    //if ( !$detect_obj->isMobile()  ){
+        $body_str_pc = "<div class=\"hplugin_main_slider\" id=\"hplugin_main_slider_id\" >".$body_str_pc."</div>";
+        $body_str_mobile = "<div class=\"hto_product hplugin_main_mobile\" style=\"margin-bottom:0;margin-top:-20px;\"><ul class=\"hto_product_list\" >".$body_str_mobile."</ul></div>";
+    //} 
+
+    $hplugin_product_gallery_showcase_str = $body_str_pc.$body_str_mobile;
 
 
 

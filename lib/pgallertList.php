@@ -3,6 +3,11 @@
 
 	global $wpdb; 
 
+
+	require_once("Mobile_Detect.php");
+    // check Mobile device
+    $detect_obj = new Mobile_Detect();
+
 	$v_cpage = $_GET["cpage"];
 	
 	// 검색어 
@@ -21,7 +26,6 @@
 	$a_opt_name = array();
 	$a_opt_val = array();
 	
-
 
 
 
@@ -229,7 +233,7 @@
     if( $a_loop_search_cnt  > 0 ){
     	 $a_option_search_str .= "
     	 <div class=\"hplugin_product_gallery_optsearch_row\">
-    	 	<div class=\"hplugin_product_gallery_opt_search_btn\" onclick=\"javascript:hplugin_product_gallery_nav(1);\">조건검색</div>
+    	 	<a href=\"#\" onclick=\"javascript:hplugin_product_gallery_nav(1);\" class=\"btn btn-primary\">검색하기</a>
     	 </div>
     	 </div>";
     	 
@@ -472,7 +476,7 @@
 
 		$a_subtitle_str = "";
 		if ( $a_subtitle ){
-			$a_subtitle_str = "<div class=\"p_detail_1\">".$a_subtitle_str."</div>";
+			$a_subtitle_str = "<div class=\"p_detail_1\">".$a_subtitle."</div>";
 		}
 
 
@@ -524,21 +528,20 @@
   			if( $a_optname == "제조사"){
 
   				switch($a_optvalue){
-
   					case "OKI" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_oki.png\" height=17 >";
   						break;
   					case "후지 제록스" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_fuji_zerox.png\" height=17 >";
   						break;
   					case "신도리코" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_shidoh.png\" height=17 >";
   						break;	
   					case "코니카 미놀타" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17 >";
   						break;		
 					case "삼성전자" : 
-  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17>";
+  						$a_manufactor_logo .="<img src=\"http://www.fics.co.kr/wp-content/uploads/2017/08/logo_samsung.png\" height=17 >";
   						break;		  						
   				}
 
@@ -666,38 +669,46 @@
 			case 'B' :			//----- Gallery  B Start
 
 
+				/**
+				$body_str .="
+            <ul class=\"hto_product_list\" id=\"hto_product_list_slider_item_id\">
+              <li class=\"hto_product_item\" id=\"hto_product_list_slider_item_id\">
+                <a href=\"".$a_linkurl."\">
+                    <div class=\"p_image\"><img src=\"".$thumb_img_url."\" height=\"180\" id=\"slick_img\" /></div>
+                    <div class=\"p_logo\">".$a_manufactor_logo."</div>
+                    <div class=\"p_name p_name_home\">".$a_title."</div>
+                    <div class=\"p_detail_1\">".$a_subtitle."</div>
+                    <div class=\"p_price p_price_home\">월 ".number_format($a_price)."원</div>
+                    <div class=\"p_icon\">".$a_option_icon_str."</div>
+                </a>
+              </li>
+            </ul>";
+				**/
+	
+
+
 
 				$body_str .="
-
-
-
+				<ul class=\"hto_product_list\" id=\"hto_product_list_slider_item_id\">
                 <li class=\"hto_product_item\">
                     <a href=\"".$a_linkurl."\" class=\"p_item\"></p>
                         <div class=\"p_image\"><img src=\"".$thumb_img_url."\" height=180></div>
                         <div class=\"p_logo\">".$a_manufactor_logo."</div>
                         <div class=\"p_name\">".$a_title."</div>
+                        ".$a_subtitle_str."
                         <div class=\"p_icon\">
-                            <!--img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_01.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_02.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a4.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a3.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_wifi.png\" height=35> 
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_network.png\" height=35-->
                             ".$a_option_icon_str."
                         </div>
-                        ".$a_subtitle_str."
                         ".$a_print_speed."
                         ".$a_max_weight."
-                        <!--div class=\"p_detail_2\">인쇄속도(분당): 컬러25매/흑백25매</div>
-                        <div class=\"p_detail_3\">최대 지원 용지 무게: 220g/㎡</div-->
                         <div class=\"p_price\">월 ".number_format($a_price)."원</div>
                         <p>
                     </a>
-                </li>
+                </li></ul>";
 
 
 
-				";
+
 
 				break;
 
@@ -907,70 +918,28 @@
 			}
 
 
-
-
-
 			// Return Page 
-			$hplugin_product_gallery_list_str = "
-
-
-<div class=\"hto_content_box\">
-    <h2 class=\"hto_content_title\">칼러장비</h2>
-    <form name=\"hpgfrm\" id=\"hpgfrm_id\" method=\"get\"  >
+			$hplugin_product_gallery_list_str = "<form name=\"hpgfrm\" id=\"hpgfrm_id\" method=\"get\"  >
     <div class=\"hto_content\">
         <div class=\"hto_product\">
-            <ul class=\"hto_product_list\">
-
-            	<!-- Option search layer -->
-            	".$a_option_search_str."
-            	<!-- Option search layer -->
-                <p>
-                    <!--// Loop -->
-                </p>
-
-
-
-
-                ".$body_str."
-
-                <!-- li class=\"hto_product_item\">
-                    <a href=\"http://www.fics.co.kr/?page_id=3391\" class=\"p_item\"></p>
-                        <div class=\"p_image\"><img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/bizhub_C225.png\" height=180></div>
-                        <div class=\"p_logo\"><img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/logo_konica_minolta.png\" height=17></div>
-                        <div class=\"p_name\">코니카미놀타 bizhub C225</div>
-                        <div class=\"p_icon\">
-                            <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_01.png\" height=35> <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_02.png\" height=35> <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a4.png\" height=35> <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_a3.png\" height=35> <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_wifi.png\" height=35> <img src=\"http://www.fics.co.kr/wp-content/uploads/2017/07/icon_network.png\" height=35>
-                        </div>
-                        <div class=\"p_detail_1\">안정적인 성능과 뛰어난 작업효율의<br />컬러 복합기</div>
-                        <div class=\"p_detail_2\">인쇄속도(분당): 컬러25매/흑백25매</div>
-                        <div class=\"p_detail_3\">최대 지원 용지 무게: 220g/㎡</div>
-                        <div class=\"p_price\">월 130,000원</div>
-                        <p>
-                    </a>
-                </li-->
-
-                <p>
-                    <!-- Loop //-->
+            <ul class=\"hto_product_list\" >
+                ".$body_str."                
+                <!-- Loop //-->
             </ul>
-            <div class=\"clear\"></div>
-            <p>
-                <!-- UI Object -->
-            </p>
+            <div class=\"clear\"></div>           
+             <!-- UI Object -->            
             <div class=\"paginate\">
-
 				".$page_nav_str."
+            </div>            
+             <!-- //UI Object -->    
 
-            </div>
-            <p>
-                <!-- //UI Object -->
-            </p>
-        </div>
-        </p>
+           	<!-- Option search layer -->
+            	".$a_option_search_str."
+            <!-- Option search layer -->
+        </div>        
     </div>
     <input type=\"hidden\" name=\"pageurl\" value=\"".get_permalink()."\" id=\"pageurl_id\" >
-    </form>
-</div>
-	";
+    </form>";
 
 
 			break;

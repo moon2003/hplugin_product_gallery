@@ -9,7 +9,7 @@
     global $wpdb ;
 
     // Get Main Data
-    $sql_query = sprintf( "SELECT no, r_no, title, subtitle, contents, contents2, catecode, price FROM wp_hplugin_product_gallery WHERE status='Y' AND no=%d", $v_cid );
+    $sql_query = sprintf( "SELECT no, r_no, title, subtitle, contents, contents2, contents3, catecode, price FROM wp_hplugin_product_gallery WHERE status='Y' AND no=%d", $v_cid );
     $gal_fd = $wpdb->get_results($sql_query);
 
     foreach( $gal_fd as $gal_data){
@@ -18,6 +18,7 @@
         $a_subtitle = $gal_data->subtitle;
         $a_contents = $gal_data->contents;
         $a_contents2 = $gal_data->contents2;
+        $a_contents3 = $gal_data->contents3;
         $a_catecode_arr = explode(",", $gal_data->catecode)  ; 
         $a_price = $gal_data->price;
 
@@ -195,7 +196,7 @@
                     <div style=\"clear:both;margin-bottom:30px;\" id=\"img_upload_".$iloopcnt."\">
                         <div style=\"float:left;min-width:250px;min-height:100px; margin-bottom:20px;\">
                         <input type=\"hidden\" name=\"imgsortno[]\" value=\"".$a_img_no."\">
-                        <img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_img_url."\" id=\"upload_img_xx_id\" border=\"1px\" style=\"width:240px;\" ></div>
+                        <img src=\"".HPLUGIN_PRODUCT_GALLERY__CONTENT_URL.$a_img_url."\" id=\"upload_img_xx_id\" border=\"1px\" style=\"\" ></div>
                         <div style=\"float:left;\">
                         <span class=\"label label-danger\" style=\"padding:3px;cursor:pointer;\" onclick=\"javascript:hplugin_product_gallery_imgdel( ".$a_img_no." , ".$v_cid." );\">이미지 삭제</span>&nbsp;
                         <span class=\"label label-info\" style=\"padding:3px;cursor:pointer;\" onclick=\"javascript:hplugin_product_gallery_set_img( ".$a_img_no." , ".$v_cid."  ,'T' );\">썸네일 지정</span>&nbsp;
@@ -272,17 +273,21 @@
 
 
             <tr>
-                <td class="active">본문[HTML가능]</td>
+                <td class="active">상품안내</td>
                 <td><textarea id="contents_id" name="contents" style="width:700px;height:400px;"><?php echo stripslashes($a_contents);?></textarea></td>
             </tr>            
 
 
 
             <tr>
-                <td class="active">본문2[HTML가능]</td>
-                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:200px;"><?php echo stripslashes($a_contents2);?></textarea></td>
+                <td class="active">상품설명</td>
+                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:300px;"><?php echo stripslashes($a_contents2);?></textarea></td>
             </tr>            
 
+            <tr>
+                <td class="active">상세사양</td>
+                <td><textarea id="contents3_id" name="contents3" style="width:700px;height:300px;"><?php echo stripslashes($a_contents3);?></textarea></td>
+            </tr>            
 
 
             <tr>
@@ -317,14 +322,14 @@
 
                     <div style="clear:both;margin-bottom:10px;" id="img_thumb_id">                    
                         <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
-                            <div class="alert alert-info">썸네일 이미지</div>
-                            <img src="<?php echo $a_thumbimg_str;?>" id="upload_img_tb_id" border="1px" style="width:240px;" >
+                            <div class="alert alert-info">썸네일 이미지 [180 x 180]</div>
+                            <img src="<?php echo $a_thumbimg_str;?>" id="upload_img_tb_id" border="1px" style="" >
                             <br>
                             <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'T' );">Clear</span>
                         </div>
                         <div style="float:left;min-width:230px;min-height:100px; margin:10px 20px 10px 10px;">
-                            <div class="alert alert-info">View 대표 이미지</div>
-                            <img src="<?php echo $a_repreimg_str;?>" id="upload_img_view_id" border="1px" style="width:240px;" >
+                            <div class="alert alert-info">View 대표 이미지 [385 x 385]</div>
+                            <img src="<?php echo $a_repreimg_str;?>" id="upload_img_view_id" border="1px" style="" >
                             <br>
                             <span class="btn btn-warning btn-xs" style="margin-top:15px;" onclick="javascript:hplugin_product_gallery_set_img( '' , <?php echo $v_cid;?>  ,'R' );">Clear</span>
                         </div>                        
@@ -349,7 +354,7 @@
                     <?php echo $a_img_str;?>
 
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
-                        <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="width:240px;" ></div>
+                        <div style="float:left;><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px"  ></div>
                         <div style="float:left;"><input type="file" name="upload_img[]"  onChange="javascript:hplugin_product_gallery_image_select( this, 'upload_img_00_id' );" ></div>                        
                     </div>
                     
@@ -378,7 +383,7 @@
     </form>    
 
     <div class="ht_room_admin_local_menu">    
-    <span class="label label-primary htobbs_btn" onclick="javascript:hplugin_product_gallery_boardSave();" >업데이트 하기</span>
+    <span class="label label-primary htobbs_btn" style="padding:10px; cursor:pointer;" onclick="javascript:hplugin_product_gallery_boardSave();" >업데이트 하기</span>
     </div>
     
     <div class="both_clear" style="height:30px;"></div>

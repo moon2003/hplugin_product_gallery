@@ -59,7 +59,7 @@
 
         	}
 
-        	$text = str_replace("[HPLUGIN-PRODUCT-GALLERY=".$v_rid.$cat_str."]",$contents_str, $text) ;
+        	$text =  str_replace("[HPLUGIN-PRODUCT-GALLERY=".$v_rid.$cat_str."]",$contents_str, $text)  ;
  
 
 		} else { 
@@ -70,7 +70,7 @@
         	
         	if( $showcasetCnt > 0 ){
         		require('hpluginproductgalleryshowcase.php'); 
-				$text = str_replace("[HPLUGIN-PRODUCT-GALLERY-SHOWCASE]",$contents_str, $text) ;
+				$text = str_replace( "<p>","", str_replace("</p>","", str_replace("[HPLUGIN-PRODUCT-GALLERY-SHOWCASE]",trim($contents_str), $text) ) ) ;
         	} else {
            		require('hpluginproductgallerybase.php'); 
         		$text = str_replace("[HPLUGIN-PRODUCT-GALLERY]",$contents_str, $text) ;
@@ -465,6 +465,7 @@
       	subtitle varchar(200),
       	contents text ,     
       	contents2 text, 	
+      	contents3 text, 	
       	catecode varchar(100),
       	price int(10) default 0,
       	userid varchar(100),

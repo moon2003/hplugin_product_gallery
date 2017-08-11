@@ -131,15 +131,20 @@
 
 
             <tr>
-                <td class="active">본문[HTML가능]</td>
+                <td class="active">상품안내</td>
                 <td><textarea id="contents_id" name="contents" style="width:700px;height:400px;"></textarea></td>
             </tr>            
 
 
 
             <tr>
-                <td class="active">본문2[HTML가능]</td>
-                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:200px;"></textarea></td>
+                <td class="active">상품설명</td>
+                <td><textarea id="contents2_id" name="contents2" style="width:700px;height:300px;"></textarea></td>
+            </tr>            
+
+            <tr>
+                <td class="active">상세사양</td>
+                <td><textarea id="contents3_id" name="contents3" style="width:700px;height:300px;"></textarea></td>
             </tr>            
 
 
@@ -172,7 +177,7 @@
                 <td id="hplugin_product_gallery_img_id">
                     
                     <div style="clear:both;margin-bottom:10px;" id="img_field_00_id">
-                        <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="width:240px;" ></div>
+                        <div style="float:left;min-width:250px;min-height:100px;"><img src="<?php print HPLUGIN_PRODUCT_GALLERY__PLUGIN_URL; ?>images/hplugin_product_gallery_noimage.png" id="upload_img_00_id" border="1px" style="" ></div>
                         <div style="float:left;"><input type="file" name="upload_img[]" onChange="javascript:hplugin_product_gallery_image_select( this, 'upload_img_00_id' );"></div>                        
                     </div>
                     

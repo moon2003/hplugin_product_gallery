@@ -18,6 +18,7 @@
             $v_subtitle = $_POST["subtitle"];
             $v_contents = $_POST["contents"];
             $v_contents2 = $_POST["contents2"];
+            $v_contents3 = $_POST["contents3"];
 
             $v_catecode_arr = $_POST["catecode"];
 
@@ -65,6 +66,7 @@
                         'subtitle' => $v_subtitle ,
                         'contents' => $v_contents, 
                         'contents2' => $v_contents2,
+                        'contents3' => $v_contents3,
                         'catecode' => $v_catecode_str,
                         'price' => $v_price,                        
                         'status' => 'Y',
@@ -76,6 +78,7 @@
                     '%s',
                     '%s',
                     '%s',                                
+                    '%s',
                     '%s',                                
                     '%d',
                     '%s',
@@ -108,7 +111,7 @@
 
                     echo "<br>VAL NAME : opt_info_".$oi." /  ".$v_optname." ".$v_optval_arr." / ".$v_optarrcnt."<br>";   
                     
-                    if( is_array($v_optval_arr)  ) { 
+                    if( !is_array($v_optval_arr)  ) { 
 
 
                         if( $v_optval_arr ){ 
@@ -297,6 +300,7 @@
             $v_subtitle = $_POST["subtitle"];
             $v_contents = $_POST["contents"];
             $v_contents2 = $_POST["contents2"];
+            $v_contents3 = $_POST["contents3"];
 
             $v_catecode_arr = $_POST["catecode"];
 
@@ -329,6 +333,7 @@
                         'subtitle' => $v_subtitle ,
                         'contents' => $v_contents, 
                         'contents2' => $v_contents2,
+                        'contents3' => $v_contents3,
                         'catecode' => $v_catecode_str,
                         'price' => $v_price,                        
 
@@ -337,6 +342,7 @@
 
                 array(
                     
+                    '%s',
                     '%s',
                     '%s',
                     '%s',
